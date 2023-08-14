@@ -13,9 +13,9 @@ class _TabNavState extends State<TabNav> with SingleTickerProviderStateMixin{
   late TabController _tabController;
 
   List<Tab> tabs = [
-    Tab(text: "Task", height: 40,),
-    Tab(text: "Note", height: 40,),
-    Tab(text: "Project", height: 40,),
+    Tab(text: "Personal", height: 40,),
+    Tab(text: "Activity", height: 40,),
+    Tab(text: "Nutrition", height: 40,),
   ];
 
   @override
@@ -30,7 +30,7 @@ class _TabNavState extends State<TabNav> with SingleTickerProviderStateMixin{
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           child: TabBar(
             indicatorWeight: .5,
 

@@ -1,9 +1,12 @@
+import 'package:fitnumbers2/providers/profile_provider/profile_provider.dart';
+import 'package:fitnumbers2/providers/welcome_provider.dart';
 import 'package:fitnumbers2/screens/main_screen.dart';
 import 'package:fitnumbers2/screens/settings_screen/settings_screen.dart';
 import 'package:fitnumbers2/themes/theme_default.dart';
 import 'package:fitnumbers2/utils/custom_page_route/custom_page_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const FitNumbers());
@@ -35,11 +38,21 @@ class FitNumbers extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      title: 'FitNumbers app',
-      debugShowCheckedModeBanner: false,
-      theme: themeDefault,
-      home: const MainScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ProfileProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WelcomeProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'FitNumbers app',
+        debugShowCheckedModeBanner: false,
+        theme: themeDefault,
+        home: const MainScreen(),
+      ),
     );
   }
 

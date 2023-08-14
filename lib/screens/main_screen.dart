@@ -36,31 +36,36 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   final List<ScreenModel> _pages = [
     ScreenModel(
       page:  WelcomeScreen(),
-      title: NavModel(
-        icon: Icons.dashboard
+      navItem: BottomNavigationBarItem(
+      icon: Icon(Icons.dashboard),
+      label: "Dash"
       ),
     ),
     ScreenModel(
       page:  CalculationScreen(),
-      title: NavModel(
-          icon: Icons.calculate
-      ),
+      navItem: BottomNavigationBarItem(
+  icon: Icon(Icons.calculate),
+  label: "Calc"
+  ),
     ),
     ScreenModel(
         page: NutritionScreen(),
-        title: NavModel(
-            icon: Icons.flatware
-        )),
+        navItem: BottomNavigationBarItem(
+  icon: Icon(Icons.flatware),
+  label: "Nutri"
+  ),),
     ScreenModel(
         page: ProfileScreen(),
-        title: NavModel(
-            icon: Icons.person
-        )),
+        navItem: BottomNavigationBarItem(
+  icon: Icon(Icons.person),
+  label: "Profile"
+  ),),
     ScreenModel(
         page: Center(child: Text("Edit"),),
-        title: NavModel(
-            icon: Icons.edit
-        )),
+        navItem: BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Sets"
+        ),),
   ];
 
   hideTrigger() {
@@ -131,25 +136,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SideNav(
-              leading: IconButton(
-                splashColor: Colors.transparent,
-                icon: Icon(
-                  Icons.menu,
-                  size: leadingIconSize,
-                ),
-                onPressed: () async {
-                  await Navigator.pushNamed(context, '/settings');
-                },
-              ),
-              itemCount: _pages.length,
-              titles: _pages.map((e) => e.title!).toList(),
-              selectedItem: _currentPage,
-              onTap: (int sel) {
-                _onPageChange(sel);
-                hideTrigger();
-              },
-            ),
+
             Expanded(
               child: Center(
                   key: widget.key,
@@ -166,8 +153,54 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
                             .elementAt(index);
                       })),
             ),
-
+            // SideNav(
+            //   leading: IconButton(
+            //     splashColor: Colors.transparent,
+            //     icon: Icon(
+            //       Icons.settings
+            //       ,
+            //       size: leadingIconSize,
+            //     ),
+            //     onPressed: () async {
+            //       //await Navigator.pushNamed(context, '/settings');
+            //     },
+            //   ),
+            //
+            //   itemCount: _pages.length,
+            //   titles: _pages.map((e) => e.title!).toList(),
+            //   selectedItem: _currentPage,
+            //   onTap: (int sel) {
+            //     _onPageChange(sel);
+            //     hideTrigger();
+            //   },
+            // ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              blurRadius: 2.5,
+              spreadRadius: 1.0,
+              offset: const Offset(1.5, 1.5),
+              color: Theme.of(context).unselectedWidgetColor.withOpacity(0.3)
+            )
+          ]
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          child: BottomNavigationBar(
+            currentIndex: _currentPage,
+
+            onTap: (int sel) {
+              _onPageChange(sel);
+              hideTrigger();
+            },
+            items: _pages.map((e) => e.navItem!).toList()
+          ),
         ),
       ),
     );
