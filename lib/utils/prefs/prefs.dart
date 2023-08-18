@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../model/slider_model/slider_model.dart';
+
 
 class Prefs extends ChangeNotifier {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -72,24 +74,22 @@ class Prefs extends ChangeNotifier {
     notifyListeners();
   }
 
-  //todo make it universal - fromMap method here:
-  // Future<List<SettingsModel>> restoreList(
-  //     String key, List<SettingsModel> list) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   final result = prefs.getStringList(key);
-  //
-  //   try {
-  //     if (result != null) {
-  //       list = result.map((i) {
-  //         return SettingsModel.fromMap(jsonDecode(i));
-  //       }).toList();
-  //     }
-  //   } catch (e) {}
-  //
-  //   notifyListeners();
-  //   return list;
-  // }
-  //
+  Future<List> restoreList(String key, List list) async {
+    final prefs = await _prefs;
+    final result = prefs.getStringList(key); // ?? [];
+
+    try {
+      if (result != null) {
+        list = result.map((i) {
+          return SliderModel.fromJson(jsonDecode(i));
+        }).toList();
+      }
+    } catch (e) {}
+
+    notifyListeners();
+    return list;
+  }
+
   // Future<List<TrashModel>> restoreTrashList(
   //     String key, List<TrashModel> list) async {
   //   SharedPreferences prefs = await SharedPreferences.getInstance();

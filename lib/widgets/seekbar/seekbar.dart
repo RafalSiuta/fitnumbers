@@ -98,16 +98,10 @@ class SeekBar extends StatelessWidget {
             Expanded(
               child:
                   IconButton(
+                    padding: EdgeInsets.zero,
                     icon: Icon(Icons.remove),
                     onPressed: btnMinus,
                   ),
-              // IcoBtn(
-              //   icon: Icons.remove,
-              //   function: btnMinus,
-              //   size: indicatorsBtnSize,
-              //   iconColor: iconColor,
-              //   fillColor: fillColor,
-              // ),
               flex: 1,
             ),
             Expanded(
@@ -123,16 +117,10 @@ class SeekBar extends StatelessWidget {
             Expanded(
               child:
               IconButton(
+                padding: EdgeInsets.zero,
                 icon: Icon(Icons.add),
                 onPressed: btnPlus,
               ),
-              // IcoBtn(
-              //   icon: Icons.add,
-              //   function: btnPlus,
-              //   size: indicatorsBtnSize,
-              //   iconColor: iconColor,
-              //   fillColor: fillColor,
-              // ),
               flex: 1,
             ),
           ],

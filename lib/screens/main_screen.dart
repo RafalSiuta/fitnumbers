@@ -42,6 +42,12 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       ),
     ),
     ScreenModel(
+      page: ProfileScreen(),
+      navItem: BottomNavigationBarItem(
+          icon: Icon(Icons.person,),
+          label: "Profile"
+      ),),
+    ScreenModel(
       page:  CalculationScreen(),
       navItem: BottomNavigationBarItem(
   icon: Icon(Icons.calculate),
@@ -54,12 +60,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   icon: Icon(Icons.flatware),
   label: "Nutri"
   ),),
-    ScreenModel(
-        page: ProfileScreen(),
-        navItem: BottomNavigationBarItem(
-  icon: Icon(Icons.person),
-  label: "Profile"
-  ),),
+
     ScreenModel(
         page: Center(child: Text("Edit"),),
         navItem: BottomNavigationBarItem(

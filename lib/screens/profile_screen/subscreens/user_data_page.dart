@@ -15,6 +15,8 @@ class UserDataPage extends StatelessWidget {
 
     return Consumer<ProfileProvider>(
       builder: (context, profileProvider, child){
+
+
       return
         Column(
           children: [
@@ -49,25 +51,39 @@ class UserDataPage extends StatelessWidget {
                 )
               ],
             ),
+            SizedBox(height: 20,),
+            Divider(
+              indent: 70,
+            endIndent: 70,
+            ),
             Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                 itemCount: 3,
-                  itemBuilder: (context, index){
-                return SeekBar(
-                  profileProvider.age,
-                  btnPlus: (){}, btnMinus: (){
+              child: Scrollbar(
+                thickness: 0.5,
 
-                }, onChange: (newVal){
-                  profileProvider.setBodySlider(newValue: newVal, index:1);
-                }, title: "Age",unit: "years",);
-              }, separatorBuilder: (context, item){
-                return  const Divider(
-                  indent: 20,
-                endIndent: 20,
-                );
-              },),
-            )
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                   itemCount: profileProvider.usrData.userDataListCounter,
+                    itemBuilder: (context, index){
+                      final data = profileProvider.userDataList[index];
+                  return SeekBar(
+                    data.sliderValue.toDouble(),
+                    btnPlus: (){
+                      profileProvider.setUserData(index, operator: "+");
+                    }, btnMinus: (){
+                    profileProvider.setUserData(index, operator: "-");
+                  }, onChange: (newVal){
+                    profileProvider.setUserData(index, newValue: newVal,);
+                  }, title: data.name,unit: data.unit,minValue: data.minValue, maxValue: data.maxValue,);
+                }, separatorBuilder: (context, item){
+                  return  const SizedBox(height: 10,);
+                },),
+              ),
+            ),
+            const SizedBox(height: 20,),
+            Divider(
+              indent: 70,
+              endIndent: 70,
+            ),
 
           ],
         );

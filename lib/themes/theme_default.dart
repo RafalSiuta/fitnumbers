@@ -110,7 +110,28 @@ final themeDefault = ThemeData(
 
     iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
-            overlayColor: MaterialStateProperty.all(theme_4MainBcgColor.withOpacity(0.1))
+          
+          alignment: Alignment.center,
+            overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.hovered))
+                  return theme_4unselectedColor;
+                if (states.contains(MaterialState.focused) ||
+                    states.contains(MaterialState.pressed))
+                  return theme_4TitleBoxBcgColor.withOpacity(0.1);
+                return theme_4unselectedColor; // Defer to the widget's default.
+              },
+            ),
+            iconColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.hovered))
+                return theme_4unselectedColor;
+              if (states.contains(MaterialState.focused) ||
+                  states.contains(MaterialState.pressed))
+                return Colors.amber;
+              return theme_4unselectedColor; // Defer to the widget's default.
+            },
+          ),
         )
     ),
     textButtonTheme: TextButtonThemeData(
@@ -125,6 +146,7 @@ final themeDefault = ThemeData(
     dividerTheme: const DividerThemeData(
       color: theme_4dividerColor,
       thickness: 0.5,
+
     ),
     cardTheme: CardTheme(
         surfaceTintColor: Colors.transparent,
@@ -301,11 +323,6 @@ final themeDefault = ThemeData(
             overflow: TextOverflow.ellipsis),
       ),
     ),
-    // sliderTheme: const SliderThemeData(
-    //     activeTrackColor: theme_4indicatorColor,
-    //     inactiveTrackColor: theme_4unselectedColor,
-    //     trackShape: RoundedRectSliderTrackShape(),
-    //     thumbColor: Colors.white)
 );
 
 

@@ -13,9 +13,9 @@ class _TabNavState extends State<TabNav> with SingleTickerProviderStateMixin{
   late TabController _tabController;
 
   List<Tab> tabs = [
-    Tab(text: "Personal", height: 40,),
-    Tab(text: "Activity", height: 40,),
-    Tab(text: "Nutrition", height: 40,),
+    const Tab(text: "Personal", height: 40,),
+    const Tab(text: "Activity", height: 40,),
+    const Tab(text: "Nutrition", height: 40,),
   ];
 
   @override
@@ -40,13 +40,13 @@ class _TabNavState extends State<TabNav> with SingleTickerProviderStateMixin{
         ),
         Expanded(
           child: TabBarView(
-
-
             controller: _tabController,
-
             children: widget.list!,
-              physics:  const BouncingScrollPhysics(
-              parent: BouncingScrollPhysics()),),
+              physics: const NeverScrollableScrollPhysics()
+              // const BouncingScrollPhysics(
+              // parent: BouncingScrollPhysics()),
+
+          ),
         ),
       ],
     );
