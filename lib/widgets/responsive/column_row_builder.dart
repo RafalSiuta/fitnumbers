@@ -26,7 +26,7 @@ class ColumnBuilder extends StatelessWidget {
       children: AnimationConfiguration.toStaggeredList(
         duration: const Duration(milliseconds: 375),
         childAnimationBuilder: (widget) => ScaleAnimation(
-          scale: 0.5,
+          scale: 0.8,
           child: FadeInAnimation(child: widget),
         ),
         children:
@@ -61,9 +61,10 @@ class RowBuilder extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: crossAxisAlignment,
       children: AnimationConfiguration.toStaggeredList(
-        duration: const Duration(milliseconds: 375),
+        delay: Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 300),
         childAnimationBuilder: (widget) => ScaleAnimation(
-          scale: 0.5,
+          scale: 0.8,
           child: FadeInAnimation(child: widget),
         ),
         children:

@@ -6,6 +6,7 @@ import '../../../providers/profile_provider/profile_provider.dart';
 import '../../../widgets/buttons/tile_button.dart';
 import '../../../widgets/cards/slider_card.dart';
 import '../../../widgets/carousel/carousel.dart';
+import '../../../widgets/responsive/column_row_builder.dart';
 import '../../../widgets/seekbar/seekbar.dart';
 
 class UserActivityPage extends StatelessWidget {
@@ -21,42 +22,35 @@ class UserActivityPage extends StatelessWidget {
               children: [
                 SizedBox(height: 20,),
                 ActivityCarousel(),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: [
-                //     SliderCard(
-                //       icon: Icons.sports_martial_arts,
-                //       description: "High activity",
-                //     )
-                //   ],
-                // ),
                 SizedBox(height: 20,),
                 Divider(
                   indent: 70,
                   endIndent: 70,
                 ),
-                Expanded(
-                  child: Scrollbar(
-                    thickness: 0.5,
-
-                    child: ListView.separated(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                      itemCount: profileProvider.activityPowerData.activityPowerListCounter,
-                      itemBuilder: (context, index){
-                        final data = profileProvider.userPowerActivityList[index];
-                        return SeekBar(
-                          data.sliderValue.toDouble(),
-                          btnPlus: (){
-                            profileProvider.setPowerActivityData(index, operator: "+");
-                          }, btnMinus: (){
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  child: ColumnBuilder(
+                    itemCount: profileProvider.activityPowerData.activityPowerListCounter,
+                    itemBuilder: (context, index) {
+                      var data = profileProvider.userPowerActivityList[index];
+                      return SeekBar(
+                        data.sliderValue.toDouble(),
+                        title: data.name,
+                        unit: data.unit,
+                        minValue: data.minValue,
+                        maxValue: data.maxValue,
+                        btnPlus: () {
+                          profileProvider.setPowerActivityData(index, operator: "+");
+                        },
+                        btnMinus: () {
                           profileProvider.setPowerActivityData(index, operator: "-");
-                        }, onChange: (newVal){
-                          profileProvider.setPowerActivityData(index, newValue: newVal,);
-                        }, title: data.name,unit: data.unit,minValue: data.minValue, maxValue: data.maxValue,);
-                      }, separatorBuilder: (context, item){
-                      return  const SizedBox(height: 10,);
-                    },),
+                        },
+                        onChange: (newVal) {
+                          profileProvider.setPowerActivityData(index,newValue: newVal);
+                        },
+                        onChangeEnd: (newValue) {},
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 20,),

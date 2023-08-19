@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fitnumbers2/utils/extensions/string_extension.dart';
+
+
 class SeekBar extends StatelessWidget {
   final String? title;
   final String? unit;
@@ -67,7 +69,7 @@ class SeekBar extends StatelessWidget {
               child: RichText(
                 maxLines: 1,
                 text: TextSpan(
-                    text: sliderValue!.toStringAsFixed(0),
+                    text: sliderValue.toStringAsFixed(0),
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         fontSize: fontSize ),
                     children: <TextSpan>[
@@ -82,7 +84,7 @@ class SeekBar extends StatelessWidget {
               ),
             ),
             Opacity(
-                opacity: sliderValue! > 0 ? 0 : 1,
+                opacity: sliderValue > 0 ? 0 : 1,
                 child: Icon(
                   Icons.warning,
                   size: fontSize,
@@ -124,7 +126,7 @@ class SeekBar extends StatelessWidget {
               flex: 1,
             ),
           ],
-        ),
+        ),//slider with buttons
         SizedBox(
           height: sliderMargin,
         ),

@@ -90,9 +90,7 @@ class ActivityCarousel extends StatelessWidget {
                       IconButton(
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.arrow_left),
-                        onPressed: (){
-
-                        },
+                        onPressed: profileProvider.goToPrevious
                       ),
                       flex: 1,
                     ),
@@ -106,9 +104,7 @@ class ActivityCarousel extends StatelessWidget {
                       child:  IconButton(
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.arrow_right),
-                        onPressed: (){
-
-                        },
+                        onPressed: profileProvider.goToNext
                       ),
                       flex: 1,
                     ),

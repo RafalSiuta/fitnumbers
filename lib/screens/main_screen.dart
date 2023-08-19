@@ -3,6 +3,7 @@ import 'package:fitnumbers2/screens/nutrition_screen/nutrition_screen.dart';
 import 'package:fitnumbers2/screens/profile_screen/profile_screen.dart';
 import 'package:fitnumbers2/screens/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../model/menu/nav_model.dart';
 import '../model/menu/screen_model.dart';
@@ -36,37 +37,42 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   final List<ScreenModel> _pages = [
     ScreenModel(
       page:  WelcomeScreen(),
-      navItem: BottomNavigationBarItem(
-      icon: Icon(Icons.dashboard),
-      label: "Dash"
+      navItem: GButton(
+      icon: Icons.dashboard,
+      text: "Dash"
       ),
     ),
     ScreenModel(
       page: ProfileScreen(),
-      navItem: BottomNavigationBarItem(
-          icon: Icon(Icons.person,),
-          label: "Profile"
+      navItem: GButton(
+          icon: Icons.person,
+          text: "Profile"
       ),),
     ScreenModel(
       page:  CalculationScreen(),
-      navItem: BottomNavigationBarItem(
-  icon: Icon(Icons.calculate),
-  label: "Calc"
-  ),
+      navItem: GButton(
+        icon: Icons.calculate,
+        text: "Calc"
+        ),
     ),
     ScreenModel(
         page: NutritionScreen(),
-        navItem: BottomNavigationBarItem(
-  icon: Icon(Icons.flatware),
-  label: "Nutri"
-  ),),
+        navItem: GButton(
+          icon: Icons.flatware,
+          text: "Nutri"
+          ),),
 
     ScreenModel(
         page: Center(child: Text("Edit"),),
-        navItem: BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Sets"
-        ),),
+        navItem:  GButton(
+          icon: Icons.settings,
+          text: "Sets"
+        )
+        // BottomNavigationBarItem(
+        //     icon: Icon(Icons.settings),
+        //     label: "Sets"
+        // ),
+    ),
   ];
 
   hideTrigger() {
@@ -179,9 +185,12 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         ),
       ),
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        //height: 40,
+        margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0),
+       // padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
           boxShadow: <BoxShadow>[
             BoxShadow(
               blurRadius: 2.5,
@@ -192,16 +201,37 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           ]
         ),
         child: ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          child: BottomNavigationBar(
-            currentIndex: _currentPage,
-
-            onTap: (int sel) {
-              _onPageChange(sel);
-              hideTrigger();
-            },
-            items: _pages.map((e) => e.navItem!).toList()
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
+          child: GNav(
+                backgroundColor: Colors.transparent,
+                rippleColor: Theme.of(context).primaryColor.withOpacity(0.2),
+                hoverColor: Theme.of(context).primaryColorLight.withOpacity(0.2),
+                gap: 3,
+                tabBorderRadius: 0,
+               // tabActiveBorder: Border.all(color:Theme.of(context).textTheme.headlineLarge!.color!, width:0.5),
+                curve: Curves.easeInOut,
+                activeColor: Theme.of(context).colorScheme.background,
+                iconSize: 18,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                duration: const Duration(milliseconds: 400),
+                tabBackgroundColor: Theme.of(context).colorScheme.onSecondary,
+                color: Theme.of(context).unselectedWidgetColor,
+                tabs: _pages.map((e) => e.navItem!).toList(),
+                onTabChange:(int sel) {
+                            _onPageChange(sel);
+                            hideTrigger();
+                          },
           ),
+
+          // BottomNavigationBar(
+          //   currentIndex: _currentPage,
+          //
+          //   onTap: (int sel) {
+          //     _onPageChange(sel);
+          //     hideTrigger();
+          //   },
+          //   items: _pages.map((e) => e.navItem!).toList()
+          // ),
         ),
       ),
     );

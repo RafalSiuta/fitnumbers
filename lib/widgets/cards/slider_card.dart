@@ -23,7 +23,7 @@ class SliderCard extends StatelessWidget {
               Icon(
                 icon,
                 size:24,
-                color:  Theme.of(context).unselectedWidgetColor,
+                color:  color,
               ),
               const SizedBox(height: 8.0,),
               Padding(

@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-const theme_4MainBcgColor = Color(0xFFEEEEEE);
+const theme_4MainBcgColor = Color(0xFFEEEEEE);//F4F0CE Color(0xFFEEEEEE);//F4F0CE
 const theme_4TitleBoxBcgColor = Colors.white;
-const theme_4firstGradientColor = Color(0xFF00C3FF);
-const theme_4middleGradientColor = Color(0xFF1B6BFF);
-const theme_4lastGradientColor = Color(0xFF2525FF);
+// const theme_4firstGradientColor = Color(0xFF00C3FF);
+// const theme_4middleGradientColor = Color(0xFF1B6BFF);
+// const theme_4lastGradientColor = Color(0xFF2525FF);
+const theme_4firstGradientColor = Color(0xFFC8DBC1);
+const theme_4middleGradientColor = Color(0xFFB1CEB7);
+const theme_4lastGradientColor = Color(0xFF74B6AA);
 const theme_4noteCardColor = Color(0xFFf5f5f5); //Color(0xFFdec9ab);f5f5f5
 const theme_4descriptionColor = Color(0xFF636363);
 const theme_4dividerColor = Color(0xFF636363);
 const theme_4unselectedColor = Color(0xFF9e9e9e); //595959
 //const theme_4calendarWeekendColor = Color(0xFFab977b);
-const theme_4indicatorColor = Color(0xFFffca28); // FEA735 f5f5f5
+const theme_4indicatorColor = Color(0xFF6F57E5);//Color(0xFFffca28); Color(0xFFF3EBA0); Color(0xFF94FFAF)// FEA735 f5f5f5 //94FFAF
 const theme_4shadowColor = Color(0xFFC0C0C0);
+const baseTextColor = Color(0xFF091C2B);
+const menuSelectionBackground = Color(0xFF6F57E5);
+
 
 final themeDefault = ThemeData(
+
     useMaterial3: true,
     splashFactory: NoSplash.splashFactory,
     scaffoldBackgroundColor: theme_4MainBcgColor,
@@ -26,7 +33,7 @@ final themeDefault = ThemeData(
       primary: theme_4firstGradientColor,
       onPrimary: theme_4firstGradientColor,
       secondary: Colors.white,
-      onSecondary: theme_4lastGradientColor,
+      onSecondary: menuSelectionBackground,
       error: Color(0xFFF32424),
       onError: Color(0xFFF32424),
       background: theme_4TitleBoxBcgColor,
@@ -42,7 +49,7 @@ final themeDefault = ThemeData(
     primaryColorLight: theme_4middleGradientColor,
     primaryColorDark: theme_4lastGradientColor,
     cardColor: theme_4middleGradientColor,
-    indicatorColor: Colors.amber,
+    indicatorColor: theme_4indicatorColor,
     highlightColor: Colors.transparent,
     shadowColor: theme_4MainBcgColor,
     dialogBackgroundColor: theme_4lastGradientColor,
@@ -52,14 +59,14 @@ final themeDefault = ThemeData(
       /// main big title //headline 1
       headlineLarge: GoogleFonts.exo2(
           textStyle: const TextStyle(
-            color: Colors.black,
+            color: baseTextColor ,
             fontSize: 32,
           )),
       /// list title //headline 3 // calendar header/ header secondary date
       headlineMedium: GoogleFonts.exo2(
         textStyle: const TextStyle(
             fontSize: 18,
-            color: Colors.black,
+            color: baseTextColor ,
             fontWeight: FontWeight.w500,
             decoration: TextDecoration.none,
             overflow: TextOverflow.ellipsis),
@@ -76,8 +83,8 @@ final themeDefault = ThemeData(
       displayMedium: GoogleFonts.exo2(
           textStyle: const TextStyle(
               fontSize: 10,
-              color: Colors.amber,
-              fontWeight: FontWeight.w300,
+              color: theme_4indicatorColor,
+              fontWeight: FontWeight.w500,
               letterSpacing: 1)),
       //small unselected text
       displaySmall: GoogleFonts.exo2(
@@ -90,7 +97,7 @@ final themeDefault = ThemeData(
       bodyLarge: GoogleFonts.exo2(
           textStyle: const TextStyle(
             fontSize: 18,
-            color: Colors.amber,
+            color: theme_4indicatorColor,
           )),
       //task/note/project description text style:
       bodyMedium:  GoogleFonts.exo2(
@@ -128,7 +135,7 @@ final themeDefault = ThemeData(
                 return theme_4unselectedColor;
               if (states.contains(MaterialState.focused) ||
                   states.contains(MaterialState.pressed))
-                return Colors.amber;
+                return theme_4indicatorColor;
               return theme_4unselectedColor; // Defer to the widget's default.
             },
           ),
@@ -154,12 +161,12 @@ final themeDefault = ThemeData(
           //side: BorderSide(color: Theme.of(context).disabledColor, width: 0.5),
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
-      color: theme_4TitleBoxBcgColor
+      color: theme_4TitleBoxBcgColor,//theme_4TitleBoxBcgColor
     ),
     sliderTheme: SliderThemeData(
       trackShape: RectangularSliderTrackShape(),
       trackHeight: 2,
-      activeTrackColor:Colors.amber,
+      activeTrackColor:theme_4indicatorColor,
       inactiveTrackColor: theme_4unselectedColor,
       thumbColor: theme_4TitleBoxBcgColor,
       overlayColor: theme_4TitleBoxBcgColor.withOpacity(0.3),
@@ -175,13 +182,13 @@ final themeDefault = ThemeData(
       indicatorColor: Colors.transparent,
       groupAlignment: .0,
       selectedIconTheme: const IconThemeData(
-        color: Colors.amber,
+        color: theme_4indicatorColor,
 
       ),
       unselectedIconTheme: const IconThemeData(color: theme_4unselectedColor,),
       selectedLabelTextStyle: GoogleFonts.exo2(
         textStyle: const TextStyle(
-            color: Colors.black, fontSize: 12.0, fontWeight: FontWeight.w900),
+            color: baseTextColor , fontSize: 12.0, fontWeight: FontWeight.w900),
       ),
       unselectedLabelTextStyle: GoogleFonts.exo2(
           textStyle: const TextStyle(
@@ -191,24 +198,48 @@ final themeDefault = ThemeData(
           )),
     ),
     accentIconTheme: const IconThemeData(color: theme_4noteCardColor, size: 18),
-    iconTheme: const IconThemeData(color: Colors.amber, size: 18),
+    iconTheme: const IconThemeData(color: theme_4indicatorColor, size: 18),
     switchTheme: SwitchThemeData(
+
         thumbColor: MaterialStateProperty.resolveWith(
               (states) {
             if (states.contains(MaterialState.selected)) {
-              return Colors.amber;
+              return Colors.white;
             } else {
               return Colors.white;
             }
           },
         ),
-        trackColor: MaterialStateProperty.all(theme_4MainBcgColor)),
+        trackColor: MaterialStateProperty.resolveWith(
+              (states) {
+            if (states.contains(MaterialState.selected)) {
+              return theme_4indicatorColor;
+            } else if (states.contains(MaterialState.disabled)){
+              return theme_4unselectedColor;
+            } else{
+              return theme_4unselectedColor;
+            }
+          },
+        ),),
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.resolveWith(
+            (states) {
+          if (states.contains(MaterialState.selected)) {
+            return theme_4indicatorColor;
+          } else if (states.contains(MaterialState.disabled)){
+            return theme_4unselectedColor;
+          } else{
+            return theme_4unselectedColor;
+          }
+        },
+      )
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: theme_4TitleBoxBcgColor,
 
       selectedIconTheme: const IconThemeData(
         size: 18.0,
-        color: Colors.amber
+        color: theme_4indicatorColor
       ),
       unselectedIconTheme: const IconThemeData(
             size: 18.0,
@@ -216,7 +247,7 @@ final themeDefault = ThemeData(
       ),
       selectedLabelStyle:  GoogleFonts.exo2(
           textStyle: const TextStyle(
-              color: Colors.amber,
+              color: theme_4indicatorColor,
               fontSize: 10.0,
               fontWeight: FontWeight.w500
           )),
@@ -226,12 +257,12 @@ final themeDefault = ThemeData(
               fontSize: 10.0,
               fontWeight: FontWeight.w500
           )),
-      selectedItemColor: Colors.amber,
+      selectedItemColor: theme_4indicatorColor,
       unselectedItemColor: theme_4unselectedColor
     ),
     floatingActionButtonTheme:
     const FloatingActionButtonThemeData(
-        backgroundColor: Colors.amber
+        backgroundColor: theme_4indicatorColor
     ),
     dialogTheme: DialogTheme(
         elevation: 5.0,
@@ -262,7 +293,7 @@ final themeDefault = ThemeData(
       focusedErrorBorder: InputBorder.none,
       isDense: true,
       filled: false,
-      hintStyle:const TextStyle(color: Colors.black, fontSize: 20),
+      hintStyle:const TextStyle(color: baseTextColor , fontSize: 20),
       contentPadding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 0.0),
       suffixStyle: const TextStyle(
         color: theme_4unselectedColor,
@@ -285,7 +316,7 @@ final themeDefault = ThemeData(
     ),
     progressIndicatorTheme:const ProgressIndicatorThemeData(
       refreshBackgroundColor: theme_4unselectedColor,
-      // linearTrackColor: Colors.amber
+      // linearTrackColor: theme_4indicatorColor
 
 
     ),
@@ -299,13 +330,13 @@ final themeDefault = ThemeData(
     ),
 
     tabBarTheme: TabBarTheme(
-      dividerColor: theme_4dividerColor,
+      dividerColor: theme_4dividerColor.withOpacity(0.5),
 
       overlayColor: MaterialStateProperty.all(Colors.transparent),
       indicator: const UnderlineTabIndicator(
-          borderSide: BorderSide(width: 2.0, color: Colors.amber),
-          insets: EdgeInsets.symmetric(horizontal: 16.0)),
-      labelColor: Colors.black,
+          borderSide: BorderSide(width: 2.0, color: theme_4indicatorColor),
+          insets: EdgeInsets.symmetric(horizontal: 12.0),),
+      labelColor: baseTextColor ,
       unselectedLabelColor: theme_4unselectedColor,
       unselectedLabelStyle: GoogleFonts.exo2(
         textStyle: const TextStyle(
@@ -317,7 +348,7 @@ final themeDefault = ThemeData(
       labelStyle: GoogleFonts.exo2(
         textStyle: const TextStyle(
             fontSize: 12,
-            color: Colors.black,
+            color: baseTextColor ,
             fontWeight: FontWeight.w500,
             decoration: TextDecoration.none,
             overflow: TextOverflow.ellipsis),

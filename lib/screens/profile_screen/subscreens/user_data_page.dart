@@ -5,6 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:fitnumbers2/providers/profile_provider/profile_provider.dart';
 import '../../../model/choice_model/choice_model.dart';
 import '../../../widgets/buttons/tile_button.dart';
+import '../../../widgets/headers/widget_header.dart';
+import '../../../widgets/responsive/list_builder.dart';
+
 
 class UserDataPage extends StatelessWidget {
   const UserDataPage({super.key});
@@ -12,6 +15,7 @@ class UserDataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const tileSize = 100.0;
+    const fontSize  = 12.0;
 
     return Consumer<ProfileProvider>(
       builder: (context, profileProvider, child){
@@ -21,6 +25,10 @@ class UserDataPage extends StatelessWidget {
         Column(
           children: [
             SizedBox(height: 20,),
+            WidgetHeader(
+              title: "gender",
+              padding: const EdgeInsets.all(12),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,29 +64,43 @@ class UserDataPage extends StatelessWidget {
               indent: 70,
             endIndent: 70,
             ),
-            Expanded(
-              child: Scrollbar(
-                thickness: 0.5,
-
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                   itemCount: profileProvider.usrData.userDataListCounter,
-                    itemBuilder: (context, index){
-                      final data = profileProvider.userDataList[index];
-                  return SeekBar(
-                    data.sliderValue.toDouble(),
-                    btnPlus: (){
-                      profileProvider.setUserData(index, operator: "+");
-                    }, btnMinus: (){
-                    profileProvider.setUserData(index, operator: "-");
-                  }, onChange: (newVal){
-                    profileProvider.setUserData(index, newValue: newVal,);
-                  }, title: data.name,unit: data.unit,minValue: data.minValue, maxValue: data.maxValue,);
-                }, separatorBuilder: (context, item){
-                  return  const SizedBox(height: 10,);
-                },),
-              ),
+            ListBuilder(
+              itemCount: profileProvider.usrData.userDataListCounter,
+              itemBuilder:  (context, index){
+                final data = profileProvider.userDataList[index];
+                return SeekBar(
+                  data.sliderValue.toDouble(),
+                  btnPlus: (){
+                    profileProvider.setUserData(index, operator: "+");
+                  }, btnMinus: (){
+                  profileProvider.setUserData(index, operator: "-");
+                }, onChange: (newVal){
+                  profileProvider.setUserData(index, newValue: newVal,);
+                }, title: data.name,unit: data.unit,minValue: data.minValue, maxValue: data.maxValue,);
+              }, separatorBuilder: (context, item){
+              return  const SizedBox(height: 10,);
+            },
             ),
+            // Expanded(
+            //   child: ListView.separated(
+            //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            //      itemCount: profileProvider.usrData.userDataListCounter,
+            //       itemBuilder: (context, index){
+            //         final data = profileProvider.userDataList[index];
+            //     return SeekBar(
+            //       data.sliderValue.toDouble(),
+            //       btnPlus: (){
+            //         profileProvider.setUserData(index, operator: "+");
+            //       }, btnMinus: (){
+            //       profileProvider.setUserData(index, operator: "-");
+            //     }, onChange: (newVal){
+            //       profileProvider.setUserData(index, newValue: newVal,);
+            //     }, title: data.name,unit: data.unit,minValue: data.minValue, maxValue: data.maxValue,);
+            //   }, separatorBuilder: (context, item){
+            //     return  const SizedBox(height: 10,);
+            //   },
+            //   ),
+            // ),
             const SizedBox(height: 20,),
             Divider(
               indent: 70,

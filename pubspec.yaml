@@ -47,6 +47,8 @@ dependencies:
   animations: ^2.0.7 #import 'package:animations/animations.dart';
   share_plus: ^5.0.0 #import 'package:share_plus/share_plus.dart';
   page_view_indicators: ^2.0.0 #flutter pub add page_view_indicators
+  google_nav_bar: ^5.0.6 #import 'package:google_nav_bar/google_nav_bar.dart';
+
 
 dev_dependencies:
   flutter_test:

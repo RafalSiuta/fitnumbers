@@ -1,5 +1,6 @@
 import 'package:fitnumbers2/providers/profile_provider/user_activity.dart';
 import 'package:fitnumbers2/providers/profile_provider/user_activity_level.dart';
+import 'package:fitnumbers2/providers/profile_provider/user_nutrition.dart';
 import 'package:flutter/material.dart';
 import 'package:fitnumbers2/providers/profile_provider/user_data.dart';
 import '../../utils/prefs/prefs.dart';
@@ -16,6 +17,8 @@ class ProfileProvider extends ChangeNotifier {
     userDataList = usrData.userData;
     userPowerActivityList = activityPowerData.activityPowerData;
     userActivityLevelList = userActivityLevel.activityLevel;
+    userNutritionDataList = userNutritionData.nutritionList;
+    userNutritionDefaultList = userNutritionData.defaultNutritionList;
     getUserDataValues();
   }
 
@@ -74,27 +77,29 @@ class ProfileProvider extends ChangeNotifier {
     CarouselController carouselController = CarouselController();
 
 
-  // goToPrevious() {
-  //   carouselController.previousPage(
-  //       duration: Duration(milliseconds: 300), curve: Curves.ease);
-  //   carousel.carouselActivity = calcResult.activity;
-  //   _prefs.storeInt('Activity', calcResult.activity);
-  //   notifyListeners();
-  // }
-  //
-  // goToNext() {
-  //   carouselController.nextPage(
-  //       duration: Duration(milliseconds: 300), curve: Curves.decelerate);
-  //   carousel.carouselActivity = calcResult.activity;
-  //   _prefs.storeInt('Activity', calcResult.activity);
-  //   notifyListeners();
-  // }
+  goToPrevious() {
+    carouselController.previousPage(
+        duration:const  Duration(milliseconds: 400), curve: Curves.ease);
+    //carousel.carouselActivity = calcResult.activity;
+
+    _prefs.storeInt('Activity', activityLevel);
+    notifyListeners();
+  }
+
+  goToNext() {
+    carouselController.nextPage(
+        duration: const Duration(milliseconds: 400), curve: Curves.decelerate);
+    //carousel.carouselActivity = calcResult.activity;
+    _prefs.storeInt('Activity', activityLevel);
+    notifyListeners();
+  }
   //
   onActivityChange(int index) {
     activityLevel = index;
     // calcResult.activity = index;
     // carousel.carouselActivity = index;
     // carousel.carouselActivity = calcResult.activity;
+    print("User activity level value: ${activityLevel}");
     _prefs.storeInt('Activity', activityLevel);
     notifyListeners();
   }
@@ -112,6 +117,35 @@ class ProfileProvider extends ChangeNotifier {
     }
     _prefs.storeList('activityList', userPowerActivityList);
     //getActivitySliderValues();
+    notifyListeners();
+  }
+
+  //user nutrition data:
+  UserNutrition userNutritionData = UserNutrition();
+  List userNutritionDataList = [];
+  List userNutritionDefaultList = [];
+
+  bool isDefaultNutrition = true;
+
+  setNutritionData(int index, {double? newValue, String? operator, }) {
+    var data = userNutritionDataList[index];
+    if (operator == '+') {
+      data.sliderValue++;
+    } else if (operator == '-') {
+      if (data.sliderValue != 0) {
+        data.sliderValue--;
+      }
+    } else {
+      data.sliderValue = newValue!.roundToDouble();
+    }
+    _prefs.storeList('nutritionList', userPowerActivityList);
+    //getActivitySliderValues();
+    notifyListeners();
+  }
+
+  onNutritionModelSwitch(bool newValue) {
+    isDefaultNutrition = newValue;
+    _prefs.storeBool('nutritionOptionSwitch', isDefaultNutrition);
     notifyListeners();
   }
 }
