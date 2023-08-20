@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../providers/profile_provider/profile_provider.dart';
 import '../../../widgets/buttons/radio_tile.dart';
+import '../../../widgets/buttons/switch_tile.dart';
+import '../../../widgets/dividers/list_divider.dart';
 import '../../../widgets/responsive/column_row_builder.dart';
 import '../../../widgets/seekbar/seekbar.dart';
-
 
 
 class UserNutritionPage extends StatelessWidget {
@@ -13,37 +13,33 @@ class UserNutritionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Consumer<ProfileProvider>(
         builder: (context, profileProvider, child){
           return
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: 20,),
-
-
-                Transform.scale(
-                  scale: 0.8,
-                  child: Switch(
-
-                    value: profileProvider.isDefaultNutrition,
-                    onChanged: (bool choice){
-                      profileProvider.onNutritionModelSwitch(choice);
-                    },
-                  ),
+                const SizedBox(height: 20,),
+                SwitchTile(
+                  title1: "default",
+                  title2: "custom",
+                  switchValue: profileProvider.isCustomNutrition,
+                  onChanged: (bool choice){
+                    profileProvider.onNutritionModelSwitch(choice);
+                  },
                 ),
-                Divider(
-                  indent: 70,
-                  endIndent: 70,
-                ),
+                const ListDivider(),
                 AnimatedOpacity(
-                  opacity: profileProvider.isDefaultNutrition == false ? 1 : 0,
+                  opacity: profileProvider.isCustomNutrition == true ? 1 : 0,
                   duration: const Duration(milliseconds: 400),
                   child: Visibility(
-                    visible: profileProvider.isDefaultNutrition == false ? true : false,
+                    visible: profileProvider.isCustomNutrition == true ? true : false,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                       child: ColumnBuilder(
-                        itemCount: profileProvider.userNutritionData.nutritionListCounter,
+                        itemCount: profileProvider.userNutritionData.customNutritionListCounter,
                         itemBuilder: (context, index) {
                           var data = profileProvider.userNutritionDataList[index];
                           return SeekBar(
@@ -61,7 +57,9 @@ class UserNutritionPage extends StatelessWidget {
                             onChange: (newVal) {
                               profileProvider.setNutritionData(index,newValue: newVal);
                             },
-                            onChangeEnd: (newValue) {},
+                            onChangeEnd: (newValue) {
+
+                            },
                           );
                         },
                       ),
@@ -69,26 +67,34 @@ class UserNutritionPage extends StatelessWidget {
                   ),
                 ),
                 AnimatedOpacity(
-                  opacity: profileProvider.isDefaultNutrition == true ? 1 : 0,
+                  opacity: profileProvider.isCustomNutrition == false ? 1 : 0,
                   duration: const Duration(milliseconds: 400),
                   child: Visibility(
-                    visible: profileProvider.isDefaultNutrition == true ? true : false,
-                    child: RadioTile(
-                      title: "Test",
-                      description: "description test",
-                      value: 1,
-                      groupValue: 1,
-                      onChoice: (newVal){
-
+                    visible: profileProvider.isCustomNutrition == false ? true : false,
+                    child: ColumnBuilder(
+                      itemCount: profileProvider.userNutritionData.defaultNutritionListCounter,
+                      itemBuilder: (context, index) {
+                        var data = profileProvider.userNutritionDefaultList[index];
+                        return  RadioTile(
+                          title: data.title,
+                          description: data.description,
+                          value: index,
+                          groupValue: profileProvider.defaultNutritionChoice,
+                          onChoice: (newVal){
+                              profileProvider.onDefaultNutritionChoice(newVal);
+                          }
+                        );
                       },
                     ),
+
                   ),
                 ),
                 const SizedBox(height: 20,),
-                Divider(
-                  indent: 70,
-                  endIndent: 70,
-                ),
+                const ListDivider(),
+                // Divider(
+                //   indent: 70,
+                //   endIndent: 70,
+                // ),
 
               ],
             );

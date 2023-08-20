@@ -24,6 +24,11 @@ class RadioTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var selectedText =  theme.textTheme.headlineMedium!.copyWith(
+      fontSize: fontSize,height: 1.5);
+    var unselectedText = theme.textTheme.displaySmall!.copyWith(
+      fontSize: fontSize,height: 1.5);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: paddingHorizontal, vertical: paddingVertical),
       child: Row(
@@ -42,13 +47,12 @@ class RadioTile extends StatelessWidget {
                 text: TextSpan(
                  text: title!.capitalizeFirstLetter(),
 
-                 style:Theme.of(context).textTheme.headlineMedium!.copyWith(
-                     fontSize: fontSize, ),
+                 style: value == groupValue ? selectedText : unselectedText,
 
               children: <TextSpan>[
                 TextSpan(text: "\n${description!.capitalizeFirstLetter()}",)
               ]
-            ), overflow: TextOverflow.ellipsis,),
+            ), overflow: TextOverflow.ellipsis,maxLines: 4,),
           )
         ],
       ),

@@ -3,13 +3,6 @@ import 'package:flutter/material.dart';
 import '../../model/actvity_model/activity_model.dart';
 
 class UserActivityLevel {
-  // int _carouselActivity = 0;
-  //
-  // int get carouselActivity => this._carouselActivity;
-  //
-  // set carouselActivity(int value) {
-  //   this._carouselActivity = value;
-  // }
 
   List<ActivityModel> _activityLevelList = [
     ActivityModel(

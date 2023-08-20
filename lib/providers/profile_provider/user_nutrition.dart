@@ -3,18 +3,8 @@ import '../../model/nutrition_model/nutrition_model.dart';
 import '../../model/slider_model/slider_model.dart';
 
 class UserNutrition {
-  // num _nutritionSlider = 0.0;
-  // int _nutritionValue = 1;
-  //
-  // set nutritionValue(int value) {
-  //   this._nutritionValue = value;
-  // }
-  //
-  // set nutritionSlider(num value) {
-  //   this._nutritionSlider = value;
-  // }
 
-  List<SliderModel> _nutritionList = [
+  final List<SliderModel> _customNutritionList = [
     SliderModel(
         name: 'protein',
         unit: '%',
@@ -35,36 +25,30 @@ class UserNutrition {
         sliderValue: 35),
   ];
 
-  UnmodifiableListView<SliderModel> get nutritionList {
-    return UnmodifiableListView(_nutritionList);
+  UnmodifiableListView<SliderModel> get customNutritionList {
+    return UnmodifiableListView(_customNutritionList);
   }
 
-  int get nutritionListCounter {
-    return _nutritionList.length;
+  int get customNutritionListCounter {
+    return _customNutritionList.length;
   }
 
-  // set nutritionList(List<SliderModel> value) {
-  //   this._nutritionList = value;
-  // }
-  //
-  // num get nutritionSlider => this._nutritionSlider;
-
-  List<NutritionModel> _defaultNutritionList = [
-    NutritionModel(
-        title: 'weight_loss',
-        description: 'weight_loss_description',
+  final List<NutritionModel> _defaultNutritionList =  [
+     NutritionModel(
+        title: 'weight loss',
+        description: 'Set nutrition percentage with 35-50% protein, 25-45% carbohydrate, and 20-35% fat.',
         protein: 40,
         carbohydrate: 30,
         fat: 30),
     NutritionModel(
         title: 'maintain',
-        description: 'maintain_description',
+        description: 'Set nutrition percentage with 25-40% protein, 35-55% carbohydrate, and 25-40% fat.',
         protein: 30,
         carbohydrate: 40,
         fat: 30),
     NutritionModel(
-        title: 'gain_weight',
-        description: 'gain_weight_description',
+        title: 'gain weight',
+        description: 'Set nutrition percentage with 35% protein, 45% carbohydrate, and 20% fat.',
         protein: 35,
         carbohydrate: 50,
         fat: 20),
@@ -78,9 +62,4 @@ class UserNutrition {
     return _defaultNutritionList.length;
   }
 
-  // set defaultNutritionList(List<NutritionModel> value) {
-  //   this._defaultNutritionList = value;
-  // }
-  //
-  // int get nutritionValue => this._nutritionValue;
 }

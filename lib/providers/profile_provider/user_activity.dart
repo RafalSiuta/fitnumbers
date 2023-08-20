@@ -3,13 +3,6 @@ import 'dart:collection';
 import '../../model/slider_model/slider_model.dart';
 
 class UserActivityPowerData {
-  // num _activitySlider = 0.0;
-  //
-  // num get activitySlider => _activitySlider;
-  //
-  // set activitySlider(num value) {
-  //   this._activitySlider = value;
-  // }
 
   List<SliderModel> _activityPowerData = [
     SliderModel(

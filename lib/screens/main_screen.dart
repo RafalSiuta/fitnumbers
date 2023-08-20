@@ -43,18 +43,18 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
       ),
     ),
     ScreenModel(
-      page: ProfileScreen(),
-      navItem: GButton(
-          icon: Icons.person,
-          text: "Profile"
-      ),),
-    ScreenModel(
       page:  CalculationScreen(),
       navItem: GButton(
         icon: Icons.calculate,
         text: "Calc"
         ),
     ),
+    ScreenModel(
+      page: ProfileScreen(),
+      navItem: GButton(
+          icon: Icons.person,
+          text: "Profile"
+      ),),
     ScreenModel(
         page: NutritionScreen(),
         navItem: GButton(

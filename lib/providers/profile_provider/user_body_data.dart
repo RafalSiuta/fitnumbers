@@ -1,19 +1,9 @@
 import 'dart:collection';
 import '../../model/slider_model/slider_model.dart';
 
-class UserData {
-  // num _bodySlider = 0.0;
-  //
-  // set bodySlider(double value) {
-  //   this._bodySlider = value;
-  // }
-  //
-  // double get bodySlider => _bodySlider;
+class UserBodyData {
 
-  UserData();
-
-
-  List<SliderModel> _userData = [
+  List<SliderModel> _userBodyData = [
     SliderModel(
         name: 'age',
         unit: 'age',
@@ -51,13 +41,13 @@ class UserData {
         maxValue: 150,
         sliderValue: 45),
   ];
-  UnmodifiableListView<SliderModel> get userData {
-    return UnmodifiableListView(_userData);
+  UnmodifiableListView<SliderModel> get userBodyData {
+    return UnmodifiableListView(_userBodyData);
   }
 
-  set userData(List<SliderModel> value) {
-    _userData = value;
+  set userBodyData(List<SliderModel> value) {
+    _userBodyData = value;
   }
 
-  int get userDataListCounter => userData.length;
+  int get userDataListCounter => userBodyData.length;
 }

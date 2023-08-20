@@ -91,8 +91,7 @@ final themeDefault = ThemeData(
           textStyle: const TextStyle(
               fontSize: 10,
               color: theme_4unselectedColor,
-              fontWeight: FontWeight.w300,
-              letterSpacing: 1)),
+              fontWeight: FontWeight.w500,)),
       ///calendar weekend text style
       bodyLarge: GoogleFonts.exo2(
           textStyle: const TextStyle(
