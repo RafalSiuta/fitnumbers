@@ -1,5 +1,6 @@
 import 'package:fitnumbers2/providers/profile_provider/profile_provider.dart';
-import 'package:fitnumbers2/providers/welcome_provider.dart';
+import 'package:fitnumbers2/providers/settings_provider/settings_provider.dart';
+import 'package:fitnumbers2/providers/welcome_provider/welcome_provider.dart';
 import 'package:fitnumbers2/screens/main_screen.dart';
 import 'package:fitnumbers2/screens/settings_screen/settings_screen.dart';
 import 'package:fitnumbers2/themes/theme_default.dart';
@@ -40,6 +41,9 @@ class FitNumbers extends StatelessWidget {
     ]);
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (context) => SettingsProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => ProfileProvider(),
         ),

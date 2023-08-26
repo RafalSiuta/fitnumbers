@@ -1,6 +1,7 @@
 import 'package:fitnumbers2/screens/calculations_screen/calculation_screen.dart';
 import 'package:fitnumbers2/screens/nutrition_screen/nutrition_screen.dart';
 import 'package:fitnumbers2/screens/profile_screen/profile_screen.dart';
+import 'package:fitnumbers2/screens/settings_screen/settings_screen.dart';
 import 'package:fitnumbers2/screens/welcome_screen/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -63,7 +64,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
           ),),
 
     ScreenModel(
-        page: Center(child: Text("Edit"),),
+        page: SettingsScreen(),
         navItem:  GButton(
           icon: Icons.settings,
           text: "Sets"

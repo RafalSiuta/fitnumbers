@@ -35,13 +35,8 @@ class RadioTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Radio(value: value!, groupValue: groupValue!, onChanged: onChoice,),
-          const SizedBox(width: 10,),
-          VerticalDivider(
-            color: Theme.of(context).unselectedWidgetColor,
-            thickness: 0.5,
-            width: 0.5,
-          ),
+
+
           Expanded(
             child: RichText(
                 text: TextSpan(
@@ -53,7 +48,10 @@ class RadioTile extends StatelessWidget {
                 TextSpan(text: "\n${description!.capitalizeFirstLetter()}",)
               ]
             ), overflow: TextOverflow.ellipsis,maxLines: 4,),
-          )
+          ),
+          const SizedBox(width: 10,),
+          Radio(value: value!, groupValue: groupValue!, onChanged: onChoice,),
+
         ],
       ),
     );

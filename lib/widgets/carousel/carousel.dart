@@ -43,7 +43,7 @@ class ActivityCarousel extends StatelessWidget {
                     height: 100,
                     aspectRatio: 3/2,
                     viewportFraction: 0.8,
-                    initialPage: 0,
+                    initialPage: profileProvider.activityLevel,
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: false,

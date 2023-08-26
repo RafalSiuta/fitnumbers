@@ -7,3 +7,6 @@ const nutritionChoiceSwitchKey = "NUTRITION_CHOICE_SETUP";
 const defaultNutritionChoiceKey = "DEFAULT_NUTRITION_CHOICE";
 const userNutritionListKey = "USER_NUTRITION_LIST";
 
+const nutritionSettingsOption = "USER_SETTINGS_NUTRITION_OPTION";
+const weightOptionValue = 'USER_WEIGHT_COUNT_OPTION';
+

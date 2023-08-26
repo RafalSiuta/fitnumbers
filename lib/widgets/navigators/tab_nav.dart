@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TabNav extends StatefulWidget {
-  const TabNav(this.list, {super.key});
+  const TabNav( {required this.list, required this.tabTitles,super.key});
   final List<Widget>? list;
+  final List<String> tabTitles;
 
   @override
   State<TabNav> createState() => _TabNavState();
@@ -12,17 +13,22 @@ class _TabNavState extends State<TabNav> with SingleTickerProviderStateMixin{
 
   late TabController _tabController;
 
-  List<Tab> tabs = [
-    const Tab(text: "Personal", height: 40,),
-    const Tab(text: "Activity", height: 40,),
-    const Tab(text: "Nutrition", height: 40,),
-  ];
+  List<Tab>? tabs;
+
+  final int _tabCounter = 0;
 
   @override
   void initState() {
-    _tabController = TabController(initialIndex: 0, length: 3, vsync: this);
+    tabs = widget.tabTitles.map((e) => Tab(text: e, height: 40,)).toList();
+    _tabController = TabController(initialIndex: _tabCounter, length: widget.list!.length, vsync: this);
     super.initState();
 
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,19 +39,17 @@ class _TabNavState extends State<TabNav> with SingleTickerProviderStateMixin{
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
           child: TabBar(
             indicatorWeight: .5,
-
               dividerColor: Theme.of(context).tabBarTheme.dividerColor,
               controller: _tabController,
-              tabs: tabs),
+              tabs: tabs!),
         ),
         Expanded(
           child: TabBarView(
             controller: _tabController,
+            physics: const NeverScrollableScrollPhysics(),
             children: widget.list!,
-              physics: const NeverScrollableScrollPhysics()
               // const BouncingScrollPhysics(
               // parent: BouncingScrollPhysics()),
-
           ),
         ),
       ],

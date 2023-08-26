@@ -14,6 +14,7 @@ class WidgetHeader extends StatelessWidget {
     return Padding(
       padding: padding!,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
             title!.capitalizeFirstLetter(),

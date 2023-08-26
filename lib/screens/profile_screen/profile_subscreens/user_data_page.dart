@@ -27,7 +27,7 @@ class UserDataPage extends StatelessWidget {
             SizedBox(height: 20,),
             WidgetHeader(
               title: "gender",
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

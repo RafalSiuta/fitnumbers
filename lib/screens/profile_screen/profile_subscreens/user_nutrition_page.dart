@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/profile_provider/profile_provider.dart';
 import '../../../widgets/buttons/radio_tile.dart';
-import '../../../widgets/buttons/switch_tile.dart';
+import '../../../widgets/buttons/large_switch_tile.dart';
 import '../../../widgets/dividers/list_divider.dart';
+import '../../../widgets/headers/widget_header.dart';
 import '../../../widgets/responsive/column_row_builder.dart';
 import '../../../widgets/seekbar/seekbar.dart';
 
@@ -22,7 +23,11 @@ class UserNutritionPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 20,),
-                SwitchTile(
+                WidgetHeader(
+                  title: "macronutrients",
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                ),
+                LargeSwitchTile(
                   title1: "default",
                   title2: "custom",
                   switchValue: profileProvider.isCustomNutrition,

@@ -6,6 +6,7 @@ import '../../../providers/profile_provider/profile_provider.dart';
 import '../../../widgets/buttons/tile_button.dart';
 import '../../../widgets/cards/slider_card.dart';
 import '../../../widgets/carousel/carousel.dart';
+import '../../../widgets/headers/widget_header.dart';
 import '../../../widgets/responsive/column_row_builder.dart';
 import '../../../widgets/seekbar/seekbar.dart';
 
@@ -20,7 +21,11 @@ class UserActivityPage extends StatelessWidget {
           return
             Column(
               children: [
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
+                WidgetHeader(
+                  title: "activity",
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                ),
                 ActivityCarousel(),
                 SizedBox(height: 20,),
                 Divider(

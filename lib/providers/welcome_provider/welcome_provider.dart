@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/header_model/header_model.dart';
+import '../../model/header_model/header_model.dart';
 
 class WelcomeProvider extends ChangeNotifier{
 

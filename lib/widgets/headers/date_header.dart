@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_animations/simple_animations.dart';
-import '../../providers/welcome_provider.dart';
+import '../../providers/welcome_provider/welcome_provider.dart';
 import '../../utils/dimensions/size_info.dart';
 
 class DateHeader extends StatelessWidget {

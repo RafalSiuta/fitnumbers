@@ -13,43 +13,24 @@ class SeekBar extends StatelessWidget {
   final double minValue;
   final double maxValue;
   final bool? enabledSlider;
-  // final Color titleColor;
-  // final Color valueColor;
-  // final Color unitColor;
-  // final Color activeTrackColor;
-  // final Color inactiveTrackColor;
-  // final Color thumbColor;
-  // final Color iconColor;
-  // final Color fillColor;
 
-  SeekBar(
+  const SeekBar(
      this.sliderValue,
       {
-
         this.title,
       this.unit,
       this.enabledSlider,
-      // this.titleColor,
-      // this.valueColor,
-      // this.unitColor,
-      // this.activeTrackColor,
-      // this.inactiveTrackColor,
-      // this.thumbColor,
-      // this.iconColor,
-      // this.fillColor,
        this.minValue = 0,
        this.maxValue = 100,
       required this.btnPlus,
       required this.btnMinus,
       required this.onChange,
-      this.onChangeEnd});
+      this.onChangeEnd, super.key});
 
   @override
   Widget build(BuildContext context) {
     var fontSize = 12.0;
     var sliderMargin = 12.0;
-    var thumbRadius = 20.0;
-    var indicatorsBtnSize = 10.0;
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
@@ -57,12 +38,12 @@ class SeekBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Expanded(
+              flex: 2,
               child: Text(
                 title!.capitalizeFirstLetter(),
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                     fontSize: fontSize ),
               ),
-              flex: 2,
             ),
             Expanded(
               flex: 2,
@@ -98,15 +79,17 @@ class SeekBar extends StatelessWidget {
         Row(
           children: <Widget>[
             Expanded(
+              flex: 1,
               child:
                   IconButton(
                     padding: EdgeInsets.zero,
                     icon: Icon(Icons.remove),
                     onPressed: btnMinus,
                   ),
-              flex: 1,
+
             ),
             Expanded(
+              flex: 10,
               child: Slider(
                 value: sliderValue,
                 min: minValue,
@@ -114,16 +97,17 @@ class SeekBar extends StatelessWidget {
                 onChanged: onChange,
                 onChangeEnd: onChangeEnd,
               ),
-              flex: 10,
+
             ),
             Expanded(
+              flex: 1,
               child:
               IconButton(
                 padding: EdgeInsets.zero,
                 icon: Icon(Icons.add),
                 onPressed: btnPlus,
               ),
-              flex: 1,
+
             ),
           ],
         ),//slider with buttons
