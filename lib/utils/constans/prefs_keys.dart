@@ -10,3 +10,5 @@ const userNutritionListKey = "USER_NUTRITION_LIST";
 const nutritionSettingsOption = "USER_SETTINGS_NUTRITION_OPTION";
 const weightOptionValue = 'USER_WEIGHT_COUNT_OPTION';
 
+const themeMode = "THEME_MODE";
+

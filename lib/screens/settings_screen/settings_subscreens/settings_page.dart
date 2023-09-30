@@ -30,9 +30,9 @@ class SettingsPage extends StatelessWidget {
                   child: SwitchTile(
                     textValue1: "light theme",
                     textValue2:"dark theme",
-                    switchValue: true,
+                    switchValue: settingsProvider.currentTheme,
                     onChanged: (newVal){
-
+                      settingsProvider.onThemeChange(newVal);
                     },
                   )
               ),

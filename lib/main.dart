@@ -1,13 +1,16 @@
+import 'package:fitnumbers2/providers/logic_provider/logic_provider.dart';
 import 'package:fitnumbers2/providers/profile_provider/profile_provider.dart';
 import 'package:fitnumbers2/providers/settings_provider/settings_provider.dart';
 import 'package:fitnumbers2/providers/welcome_provider/welcome_provider.dart';
 import 'package:fitnumbers2/screens/main_screen.dart';
 import 'package:fitnumbers2/screens/settings_screen/settings_screen.dart';
-import 'package:fitnumbers2/themes/theme_default.dart';
+import 'package:fitnumbers2/themes/theme_light.dart';
 import 'package:fitnumbers2/utils/custom_page_route/custom_page_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import 'themes/theme_dark.dart';
 
 void main() {
   runApp(const FitNumbers());
@@ -42,6 +45,9 @@ class FitNumbers extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (context) => LogicProvider(),
+        ),
+        ChangeNotifierProvider(
           create: (context) => SettingsProvider(),
         ),
         ChangeNotifierProvider(
@@ -51,11 +57,17 @@ class FitNumbers extends StatelessWidget {
           create: (context) => WelcomeProvider(),
         ),
       ],
-      child: MaterialApp(
-        title: 'FitNumbers app',
-        debugShowCheckedModeBanner: false,
-        theme: themeDefault,
-        home: const MainScreen(),
+      child: Consumer<SettingsProvider>(
+        builder: (context, settings, child){
+         return MaterialApp(
+           title: 'FitNumbers app',
+           debugShowCheckedModeBanner: false,
+           theme: themeLight,
+           darkTheme: themeDark,
+           themeMode: settings.getTheme(),
+           home: const MainScreen(),
+         );
+        }
       ),
     );
   }

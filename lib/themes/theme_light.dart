@@ -21,8 +21,9 @@ const baseTextColor = Color(0xFF091C2B);
 const menuSelectionBackground = Color(0xFF6F57E5);
 
 
-final themeDefault = ThemeData(
+final themeLight = ThemeData(
 
+    brightness: Brightness.light,
     useMaterial3: true,
     splashFactory: NoSplash.splashFactory,
     scaffoldBackgroundColor: theme_4MainBcgColor,
@@ -195,7 +196,7 @@ final themeDefault = ThemeData(
               fontWeight: FontWeight.w500
           )),
     ),
-    accentIconTheme: const IconThemeData(color: theme_4noteCardColor, size: 18),
+    actionIconTheme: const ActionIconThemeData(),//const IconThemeData(color: theme_4noteCardColor, size: 18),
     iconTheme: const IconThemeData(color: theme_4indicatorColor, size: 18),
     switchTheme: SwitchThemeData(
 

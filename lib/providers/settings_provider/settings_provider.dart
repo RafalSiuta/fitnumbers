@@ -1,3 +1,4 @@
+import 'package:fitnumbers2/providers/settings_provider/theme_option.dart';
 import 'package:flutter/material.dart';
 import '../../utils/constans/prefs_keys.dart';
 import '../../utils/prefs/prefs.dart';
@@ -10,14 +11,44 @@ class SettingsProvider extends ChangeNotifier {
   initSettingsProvider();
   }
 
-  initSettingsProvider()async {
+  initSettingsProvider() async {
+    loadTheme();
     nutritionSettings = nutritionSettingsList.nutritionOptionList;
     weightSettings = weightOptionList.weightOptionTypeList;
     getNutritionOptionList();
+
   }
 
-  final Prefs _prefs = Prefs();
+   final Prefs _prefs = Prefs();
 
+
+  //theme setup:
+  late ThemeMode _themeMode;
+
+  bool currentTheme = true;
+
+  getTheme() {
+    if(currentTheme == true){
+      _themeMode = ThemeMode.light;
+    }else{
+      _themeMode = ThemeMode.dark;
+    }
+    return _themeMode;
+  }
+
+  void loadTheme() async{
+    currentTheme = await _prefs.restoreBool(themeMode, currentTheme);
+    print("theme is loaded");
+    print("current theme is ${currentTheme}");
+  }
+
+  void onThemeChange(bool sel){
+    currentTheme = sel;
+    _prefs.storeBool(themeMode, currentTheme);
+    getTheme();
+    print("switch theme is ${currentTheme}");
+    notifyListeners();
+  }
 
   //nutrition settings
   NutritionOptionList nutritionSettingsList = NutritionOptionList();
@@ -42,6 +73,7 @@ class SettingsProvider extends ChangeNotifier {
   getBodyWeightOptionList() async {
     weightChoice  = await _prefs.restoreInt(
         weightOptionValue, weightChoice );
+    notifyListeners();
   }
 
   onBodyWeightOption(int? index) {

@@ -24,6 +24,8 @@ class ProfileProvider extends ChangeNotifier {
     getUserDataValues();
     getUserActivityValues();
     getUserNutritionValues();
+
+    print('${userData.gender}| ${userData.weight} | ${userData.height} | ${userData.age}');
   }
 
   final Prefs _prefs = Prefs();
