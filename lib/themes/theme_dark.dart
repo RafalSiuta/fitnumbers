@@ -196,7 +196,7 @@ final themeDark = ThemeData(
               fontWeight: FontWeight.w500
           )),
     ),
-    actionIconTheme: const ActionIconThemeData(),//const IconThemeData(color: theme_4noteCardColor, size: 18),
+   // actionIconTheme: const ActionIconThemeData(),//const IconThemeData(color: theme_4noteCardColor, size: 18),
     iconTheme: const IconThemeData(color: theme_4indicatorColor, size: 18),
     switchTheme: SwitchThemeData(
 

@@ -45,14 +45,16 @@ class FitNumbers extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => LogicProvider(),
+          create: (context) => ProfileProvider(),
+        ),
+        ChangeNotifierProxyProvider(
+          create: (context) => LogicProvider(Provider.of<ProfileProvider>(context, listen: false)),
+          update: (context, ProfileProvider profile, logic) => LogicProvider(profile),
         ),
         ChangeNotifierProvider(
           create: (context) => SettingsProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => ProfileProvider(),
-        ),
+
         ChangeNotifierProvider(
           create: (context) => WelcomeProvider(),
         ),

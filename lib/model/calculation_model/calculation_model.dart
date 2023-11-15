@@ -45,7 +45,8 @@ class CalculationModel {
         'description': description,
         'long_description': longDescription,
         'is_favorite': isFavorite,
-        'img_path': imagePath
+        'img_path': imagePath,
+        'info_color': infoColor
       };
 
   CalculationModel.fromJson(Map<String, dynamic> json)
@@ -58,5 +59,6 @@ class CalculationModel {
         description = json['description'],
         longDescription = json['long_description'],
         isFavorite = json['is_favorite'] as bool,
+        infoColor = json['info_color'] as Color,
         imagePath = json['img_path'];
 }

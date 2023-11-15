@@ -24,13 +24,12 @@ class ProfileProvider extends ChangeNotifier {
     getUserDataValues();
     getUserActivityValues();
     getUserNutritionValues();
-
-    print('${userData.gender}| ${userData.weight} | ${userData.height} | ${userData.age}');
+    getUserData();
   }
 
   final Prefs _prefs = Prefs();
 
-  UserDataModel userData = UserDataModel();
+
 
   //gender setup
   bool isGenderSelected = true;
@@ -38,11 +37,14 @@ class ProfileProvider extends ChangeNotifier {
   void onGenderSelect(bool sel){
     isGenderSelected = sel;
     _prefs.storeBool(userGenderKey, isGenderSelected);
+
     notifyListeners();
   }
 
+  //UserDataModel userData = UserDataModel();
   //user data sliders setup:
   UserBodyData usrData = UserBodyData();
+
   List userDataList = [];
 
   void setUserData( int index,{double? newValue,String? operator}) {
@@ -70,7 +72,7 @@ class ProfileProvider extends ChangeNotifier {
     isGenderSelected = await _prefs.restoreBool(userGenderKey, isGenderSelected);
     userDataList =
         await _prefs.restoreList(userBodyDataKey, userDataList) ?? userDataList;
-
+    getUserData();
     notifyListeners();
   }
 
@@ -91,6 +93,7 @@ class ProfileProvider extends ChangeNotifier {
     //carousel.carouselActivity = calcResult.activity;
 
     _prefs.storeInt(userActivityLevelKey, activityLevel);
+    getUserData();
     notifyListeners();
   }
 
@@ -99,6 +102,7 @@ class ProfileProvider extends ChangeNotifier {
         duration: const Duration(milliseconds: 400), curve: Curves.decelerate);
     //carousel.carouselActivity = calcResult.activity;
     _prefs.storeInt(userActivityLevelKey, activityLevel);
+    getUserData();
     notifyListeners();
   }
   //
@@ -109,6 +113,7 @@ class ProfileProvider extends ChangeNotifier {
     // carousel.carouselActivity = calcResult.activity;
    // print("User activity level value: ${activityLevel}");
     _prefs.storeInt(userActivityLevelKey, activityLevel);
+    getUserData();
     notifyListeners();
   }
 
@@ -124,7 +129,7 @@ class ProfileProvider extends ChangeNotifier {
       data.sliderValue = newValue!.roundToDouble();
     }
     _prefs.storeList(userActivityListKey, userPowerActivityList);
-    //getActivitySliderValues();
+    getUserActivityValues();
     notifyListeners();
   }
 
@@ -148,6 +153,7 @@ class ProfileProvider extends ChangeNotifier {
     userPowerActivityList =
         await _prefs.restoreList(userActivityListKey, userPowerActivityList) ??
         userPowerActivityList;
+    getUserData();
     notifyListeners();
   }
 
@@ -198,27 +204,60 @@ class ProfileProvider extends ChangeNotifier {
     if(isCustomNutrition == false){
       defaultNutritionChoice = await _prefs.restoreInt(defaultNutritionChoiceKey, defaultNutritionChoice);
 
-      userData.proteinPercent = userNutritionDefaultList[defaultNutritionChoice].protein;
-      userData.carbPercent = userNutritionDefaultList[defaultNutritionChoice].carbohydrate;
-      userData.fatPercent = userNutritionDefaultList[defaultNutritionChoice].fat;
-
-      print("User data from default nutrition ${userData.toJson()}");
     }else{
       userNutritionDataList =  await _prefs.restoreList(
           userNutritionListKey, userNutritionDataList);
-      //TODO: figure out values from int to double error:
-      userData.proteinPercent = userNutritionDataList[0].sliderValue.toDouble();
-      userData.carbPercent = userNutritionDataList[1].sliderValue.toDouble();
-      userData.fatPercent = userNutritionDataList[2].sliderValue.toDouble();
 
-      print("User data from CUSTOM nutrition ${userData.toJson()}");
     }
-
+    getUserData();
   notifyListeners();
   }
+  UserDataModel userData = UserDataModel();
+  UserDataModel getUserData() {
 
-  // UPDATE USER ALL USER DATA:
-  onUpdateUserData(){
+    List? data = [...userDataList,...userNutritionDataList, ...userPowerActivityList];
 
+    userData.gender = isGenderSelected;
+    userData.activity = activityLevel;
+
+    //print('ITEMS NUMBER ${data.length}');
+    for(int i = 0; i < data.length; i++){
+     // print('This is new list from all sliders - ${data[i].name}');
+      switch(data[i].name){
+        case 'age':
+          userData.age = data[i].sliderValue.toDouble();
+          break;
+        case 'weight':
+          userData.weight = data[i].sliderValue.toDouble();
+          break;
+        case 'height':
+          userData.height = data[i].sliderValue.toDouble();
+          break;
+        case 'waist':
+          userData.waist = data[i].sliderValue.toDouble();
+          break;
+        case 'hips':
+          userData.hips = data[i].sliderValue.toDouble();
+          break;
+        case 'neck':
+          userData.neck = data[i].sliderValue.toDouble();
+          break;
+      }
+    }
+    List? nutriData;
+    if(isCustomNutrition == false){
+      nutriData = userNutritionDataList;
+    }else{
+      nutriData = userNutritionDefaultList;
+    }
+    for(int i = 0; i < nutriData.length ; i++){
+      print('This is new list nutri data - ${data[i].name}');
+    }
+
+
+
+    notifyListeners();
+    return userData;
   }
+
 }
