@@ -51,6 +51,9 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   //nutrition settings
+  //TODO: set kcal or grams valu for protin and carbo counting
+  bool isMinKcal = true;
+  bool isProteinKcal = true;
   NutritionOptionList nutritionSettingsList = NutritionOptionList();
   List nutritionSettings = [];
 

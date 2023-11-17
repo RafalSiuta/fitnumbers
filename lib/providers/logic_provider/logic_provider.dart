@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import '../../model/calculation_model/calculation_model.dart';
 import '../../model/chart_model/chart_model.dart';
 import '../profile_provider/profile_provider.dart';
+import '../settings_provider/settings_provider.dart';
 
 class LogicProvider extends ChangeNotifier {
 
-  LogicProvider( this.profile){
+  LogicProvider( this.profile, this.settings){
     updateCalculationList();
   }
 
@@ -18,6 +19,7 @@ class LogicProvider extends ChangeNotifier {
 
 
   ProfileProvider profile;
+  SettingsProvider settings;
 
   List<CalculationModel> _numbersList = [];
 
@@ -26,7 +28,15 @@ class LogicProvider extends ChangeNotifier {
       bmiResult(),
       bmrResult(),
       terResult(),
-      ymcaResult()
+      ymcaResult(),
+      aymcaResult(),
+      whrResult(),
+      whtrResult(),
+      pottonResult(),
+      pureWeightResult(),
+      waterIntakeResult(),
+      proteinIntakeResult(),
+
     ];
     notifyListeners();
     return list;
@@ -65,26 +75,28 @@ class LogicProvider extends ChangeNotifier {
     return infoColor;
   }
 
-  // num selectedWeight() {
-  //   num weight = 0;
-  //   switch (this.selectWeightValue) {
-  //     case 0:
-  //       weight = this._weight;
-  //       break;
-  //     case 1:
-  //       weight = this._potton.value;
-  //       break;
-  //     case 2:
-  //       weight = this._lorenz.value;
-  //       break;
-  //     case 3:
-  //       weight = this._leanWeight.value;
-  //       break;
-  //     default:
-  //       weight = this._weight;
-  //   }
-  //   return weight;
-  // }
+  //TODO APPLY ONLY FOR CALORIES COUNTING
+  double selectedWeight() {
+    double weight = 0;
+    switch (settings.weightChoice) {
+      case 0:
+        weight = profile.userData.weight!;
+        break;
+      case 1:
+       weight = pottonResult().value!;
+        break;
+      case 2:
+       weight = lorenzResult().value!;
+        break;
+      case 3:
+        weight = pureWeightResult().value!;
+        break;
+      default:
+        weight = profile.userData.weight!;
+    }
+    notifyListeners();
+    return weight;
+  }
 
   CalculationModel bmiResult({List<ChartModel>? chart}) {
     CalculationModel bmi = CalculationModel();
@@ -132,11 +144,12 @@ class LogicProvider extends ChangeNotifier {
 
   CalculationModel bmrResult({List<ChartModel>? chart}) {
     CalculationModel bmr = CalculationModel();
+    double weight = selectedWeight();
     try {
       if (profile.userData.gender == true) {
-        bmr.value = 66.47 + (13.75 * profile.userData.weight!) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
+        bmr.value = 66.47 + (13.75 * weight ) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
       } else {
-        bmr.value = 665.09 + (9.56 * profile.userData.weight!) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
+        bmr.value = 665.09 + (9.56 * weight ) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
       }
     } catch (e) {
       bmr.value = 0;
@@ -161,11 +174,12 @@ class LogicProvider extends ChangeNotifier {
 
   CalculationModel terResult({List<ChartModel>? chart}) {
     CalculationModel ter = CalculationModel();
+    double weight = selectedWeight();
     try {
       if (profile.userData.gender == true) {
-        ter.value = 66.47 + (13.75 * profile.userData.weight!) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
+        ter.value = 66.47 + (13.75 * weight) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
       } else {
-        ter.value = 665.09 + (9.56 * profile.userData.weight!) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
+        ter.value = 665.09 + (9.56 * weight) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
       }
       switch (profile.userData.activity) {
         case 0:
@@ -270,289 +284,303 @@ class LogicProvider extends ChangeNotifier {
       ymca.imagePath = imagePath('male_index2', 'female_index2');
 
     }
-
+    notifyListeners();
     return ymca;
   }
   //
-  // CalculationModel aymcaResult({List<ChartModel> chart}) {
-  //   try {
-  //     if (gender == true) {
-  //       _aymca.value! = 495 /
-  //           (1.0324 -
-  //               .19077 * (log(waist - neck) / log(10)) +
-  //               .15456 * (log(height) / log(10))) -
-  //           450;
-  //     } else {
-  //       _aymca.value = 495 /
-  //           (1.29579 -
-  //               .35004 * (log(waist + hip - neck) / log(10)) +
-  //               .22100 * (log(height) / log(10))) -
-  //           450;
-  //     }
-  //     _aymca.value = (_aymca.value * weight) / 100;
-  //     _aymca.value *= 0.45359237;
-  //   } catch (e) {
-  //     _aymca.value = 0;
-  //   } finally {
-  //     if (gender == true) {
-  //       if (_aymca.value >= 3 && _aymca.value <= 5) {
-  //         _aymca.unit = 'aymca_essential_fat';
-  //       } else if (_aymca.value >= 6 && _aymca.value <= 14) {
-  //         _aymca.unit = 'aymca_athletes';
-  //       } else if (_aymca.value > 14 && _aymca.value <= 18) {
-  //         _aymca.unit = 'aymca_fitness';
-  //       } else if (_aymca.value > 18 && _aymca.value <= 25) {
-  //         _aymca.unit = 'aymca_average';
-  //       } else if (_aymca.value > 25) {
-  //         _aymca.unit = 'aymca_obese';
-  //       }
-  //     } else {
-  //       if (_aymca.value >= 10 && _aymca.value <= 14) {
-  //         _aymca.unit = 'aymca_essential fat';
-  //       } else if (_aymca.value > 14 && _aymca.value <= 21) {
-  //         _aymca.unit = 'aymca_athletes';
-  //       } else if (_aymca.value > 21 && _aymca.value <= 25) {
-  //         _aymca.unit = 'aymca_fitness';
-  //       } else if (_aymca.value > 25 && _aymca.value <= 32) {
-  //         _aymca.unit = 'aymca_average';
-  //       } else if (_aymca.value > 32) {
-  //         _aymca.unit = 'aymca_obese';
-  //       }
-  //     }
-  //     _aymca.symbol = 'I';
-  //     _aymca.title = 'aymca_title';
-  //     _aymca.shortTitle = 'YMCA navy';
-  //     _aymca.description = 'aymca_description';
-  //     _aymca.longDescription = 'aymca_long_description';
-  //     _aymca.formulaMale =
-  //     'BF = 495 / (1.0324 - 0.19077 * (log(Wa - N) / log(10)) + 0.15456 * (log(H) / log(10))) - 450 \n BF = ((BF * W) / 100)  * 0.45359237';
-  //     _aymca.formulaFemale =
-  //     'BF = 495 / (1.29579 - 0.35004 * (log(Wa[cm] + Hi - N) / log(10)) + 0.22100 * (log(H) / log(10))) - 450 \n BF = ((BF * W) / 100)  * 0.45359237 ';
-  //     _aymca.chartList = chart;
-  //     _aymca.imagePath = imagePath('male_index3', 'female_index3');
+  CalculationModel aymcaResult({List<ChartModel>? chart}) {
+    CalculationModel aymca = CalculationModel();
+    try {
+      if (profile.userData.gender == true) {
+        aymca.value = 495 /
+            (1.0324 -
+                .19077 * (log(profile.userData.waist! - profile.userData.neck!) / log(10)) +
+                .15456 * (log(profile.userData.height!) / log(10))) -
+            450;
+      } else {
+        aymca.value = 495 /
+            (1.29579 -
+                .35004 * (log(profile.userData.waist! + profile.userData.hips! - profile.userData.neck!) / log(10)) +
+                .22100 * (log(profile.userData.height!) / log(10))) -
+            450;
+      }
+      aymca.value = (aymca.value! * profile.userData.weight!) / 100;
+      aymca.value = aymca.value! * 0.45359237;
+    } catch (e) {
+      aymca.value = 0;
+    } finally {
+      if (profile.userData.gender == true) {
+        if (aymca.value! >= 3 && aymca.value! <= 5) {
+          aymca.unit = 'aymca_essential_fat';
+          aymca.infoColor = checkWarning(0);
+        } else if (aymca.value! >= 6 && aymca.value! <= 14) {
+          aymca.unit = 'aymca_athletes';
+          aymca.infoColor = checkWarning(0);
+        } else if (aymca.value! > 14 && aymca.value! <= 18) {
+          aymca.unit = 'aymca_fitness';
+          aymca.infoColor = checkWarning(0);
+        } else if (aymca.value! > 18 && aymca.value! <= 25) {
+          aymca.unit = 'aymca_average';
+          aymca.infoColor = checkWarning(1);
+        } else if (aymca.value! > 25) {
+          aymca.unit = 'aymca_obese';
+          aymca.infoColor = checkWarning(2);
+        }
+      } else {
+        if (aymca.value! >= 10 && aymca.value! <= 14) {
+          aymca.unit = 'aymca_essential fat';
+          aymca.infoColor = checkWarning(0);
+        } else if (aymca.value! > 14 && aymca.value! <= 21) {
+          aymca.unit = 'aymca_athletes';
+          aymca.infoColor = checkWarning(0);
+        } else if (aymca.value! > 21 && aymca.value! <= 25) {
+          aymca.unit = 'aymca_fitness';
+          aymca.infoColor = checkWarning(0);
+        } else if (aymca.value! > 25 && aymca.value! <= 32) {
+          aymca.unit = 'aymca_average';
+          aymca.infoColor = checkWarning(1);
+        } else if (aymca.value! > 32) {
+          aymca.unit = 'aymca_obese';
+          aymca.infoColor = checkWarning(2);
+        }
+      }
+      aymca.symbol = 'I';
+      aymca.title = 'aymca_title';
+      aymca.shortTitle = 'YMCA navy';
+      aymca.description = 'aymca_description';
+      aymca.longDescription = 'aymca_long_description';
+      aymca.formulaMale =
+      'BF = 495 / (1.0324 - 0.19077 * (log(Wa - N) / log(10)) + 0.15456 * (log(H) / log(10))) - 450 \n BF = ((BF * W) / 100)  * 0.45359237';
+      aymca.formulaFemale =
+      'BF = 495 / (1.29579 - 0.35004 * (log(Wa[cm] + Hi - N) / log(10)) + 0.22100 * (log(H) / log(10))) - 450 \n BF = ((BF * W) / 100)  * 0.45359237 ';
+      aymca.chartList = chart;
+      aymca.imagePath = imagePath('male_index3', 'female_index3');
+
+    }
+    notifyListeners();
+    return aymca;
+  }
   //
-  //     displayColorValue = colorLightingColorDark;
-  //   }
+  CalculationModel whrResult({List<ChartModel>? chart}) {
+    CalculationModel whr = CalculationModel();
+    try {
+      whr.value = profile.userData.waist! / profile.userData.hips!;
+    } catch (e) {
+      whr.value = 0.80;
+    } finally {
+      if (profile.userData.gender == true) {
+        if (whr.value! <= 0.95) {
+          whr.unit = 'whr_good';
+          whr.description = 'whr_good_description';
+          whr.infoColor = checkWarning(0);
+        } else if (whr.value! <= 0.99) {
+          whr.unit = 'whr_average';
+          whr.description = 'whr_average_description';
+          whr.infoColor = checkWarning(1);
+        } else if (whr.value! >= 1.0) {
+          whr.unit = 'whr_high';
+          whr.description = 'whr_high_description';
+          whr.infoColor = checkWarning(2);
+        }
+      } else {
+        if (whr.value! <= 0.80) {
+          whr.infoColor = checkWarning(0);
+          whr.unit = 'whr_good';
+          whr.description = 'whr_good_description';
+        } else if (whr.value! <= 0.84) {
+          whr.infoColor = checkWarning(1);
+          whr.unit = 'whr_average';
+          whr.description = 'whr_average_description';
+        } else if (whr.value! >= 0.85) {
+          whr.infoColor = checkWarning(2);
+          whr.unit = 'whr_high';
+          whr.description = 'whr_high_description';
+        }
+      }
+      whr.symbol = 'O';
+      whr.title = 'whr_title';
+      whr.shortTitle = 'WHR';
+      whr.longDescription = 'whr_long_description';
+      whr.formulaMale = 'WHR = Wa / Hi ';
+      whr.formulaFemale = "";
+      whr.chartList = chart;
+      whr.imagePath = imagePath('male_index1', 'female_index2');
+
+    }
+    notifyListeners();
+    return whr;
+  }
   //
-  //   return this._aymca;
-  // }
+  CalculationModel whtrResult({List<ChartModel>? chart}) {
+    CalculationModel whtr = CalculationModel();
+    try {
+      whtr.value = profile.userData.waist! / profile.userData.height!;
+    } catch (e) {
+      whtr.value = 0.80;
+    } finally {
+      if (profile.userData.gender == true) {
+        if (whtr.value! < 0.34) {
+          whtr.unit = 'whtr_extremely_slim';
+          whtr.description = 'whtr_extremely_slim_description';
+          whtr.infoColor = checkWarning(2);
+        } else if (whtr.value! > 0.35 && whtr.value! <= 0.43) {
+          whtr.unit = 'whtr_slim';
+          whtr.description = 'whtr_slim_description';
+          whtr.infoColor = checkWarning(1);
+        } else if (whtr.value! > 0.43 && whtr.value! <= 0.52) {
+          whtr.unit = 'whtr_healthy';
+          whtr.description = 'whtr_healthy_description';
+          whtr.infoColor = checkWarning(0);
+        } else if (whtr.value! >= 0.53 && whtr.value! <= 0.57) {
+          whtr.unit = 'whtr_overweight';
+          whtr.description = 'whtr_overweight_description';
+          whtr.infoColor = checkWarning(1);
+        } else if (whtr.value! >= 0.58 && whtr.value! <= 0.62) {
+          whtr.unit = 'whtr_very_overweight';
+          whtr.description = 'whtr_very_overweight_description';
+          whtr.infoColor = checkWarning(1);
+        } else if (whtr.value! > 0.63) {
+          whtr.unit = 'whtr_obese';
+          whtr.description = 'whtr_obese_description';
+          whtr.infoColor = checkWarning(2);
+        }
+      } else {
+        if (whtr.value! < 0.34) {
+          whtr.unit = 'whtr_extremely_slim';
+          whtr.description = 'whtr_extremely_slim_description';
+          whtr.infoColor = checkWarning(2);
+        } else if (whtr.value! > 0.35 && whtr.value! <= 0.42) {
+          whtr.unit = 'whtr_slim';
+          whtr.description = 'whtr_slim_description';
+          whtr.infoColor = checkWarning(1);
+        } else if (whtr.value! > 0.42 && whtr.value! <= 0.48) {
+          whtr.unit = 'whtr_healthy';
+          whtr.description = 'whtr_healthy_description';
+          whtr.infoColor = checkWarning(0);
+        } else if (whtr.value! >= 0.49 && whtr.value! <= 0.53) {
+          whtr.unit = 'whtr_overweight';
+          whtr.description = 'whtr_overweight_description';
+          whtr.infoColor = checkWarning(1);
+        } else if (whtr.value! > 0.53 && whtr.value! <= 0.57) {
+          whtr.unit = 'whtr_very_overweight';
+          whtr.description = 'whtr_very_overweight_description';
+          whtr.infoColor = checkWarning(1);
+        } else if (whtr.value! > 0.58) {
+          whtr.unit = 'whtr_obese';
+          whtr.description = 'whtr_obese_description';
+          whtr.infoColor = checkWarning(2);
+        }
+      }
+
+      whtr.symbol = 'P';
+      whtr.title = 'whtr_title';
+      whtr.shortTitle = 'WHTR';
+      whtr.longDescription = 'whtr_long_description';
+      whtr.formulaMale = 'WHTR = Wa / H * 100';
+      whtr.formulaFemale = '';
+      whtr.chartList = chart;
+      whtr.imagePath = imagePath('male_index2', 'female_index');
+    }
+    notifyListeners();
+    return whtr;
+  }
   //
-  // CalculationModel whrResult({List<ChartModel> chart}) {
-  //   try {
-  //     _whr.value = waist / hip;
-  //   } catch (e) {
-  //     _whr.value = 0.80;
-  //   } finally {
-  //     if (gender == true) {
-  //       if (_whr.value <= 0.95) {
-  //         _whr.unit = 'whr_good';
-  //         _whr.description = 'whr_good_description';
-  //         displayColorValue = colorLightingColorDark;
-  //       } else if (_whr.value <= 0.99) {
-  //         _whr.unit = 'whr_average';
-  //         _whr.description = 'whr_average_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whr.value >= 1.0) {
-  //         _whr.unit = 'whr_high';
-  //         _whr.description = 'whr_high_description';
-  //         displayColorValue = Colors.redAccent;
-  //       }
-  //     } else {
-  //       if (_whr.value <= 0.80) {
-  //         displayColorValue = colorLightingColorDark;
-  //         _whr.unit = 'whr_good';
-  //         _whr.description = 'whr_good_description';
-  //       } else if (_whr.value <= 0.84) {
-  //         displayColorValue = Colors.yellow;
-  //         _whr.unit = 'whr_average';
-  //         _whr.description = 'whr_average_description';
-  //       } else if (_whr.value >= 0.85) {
-  //         displayColorValue = Colors.redAccent;
-  //         _whr.unit = 'whr_high';
-  //         _whr.description = 'whr_high_description';
-  //       }
-  //     }
-  //     _whr.symbol = 'O';
-  //     _whr.title = 'whr_title';
-  //     _whr.shortTitle = 'WHR';
-  //     _whr.longDescription = 'whr_long_description';
-  //     _whr.formulaMale = 'WHR = Wa / Hi ';
-  //     _whr.formulaFemale = "";
-  //     _whr.chartList = chart;
-  //     _whr.imagePath = imagePath('male_index1', 'female_index2');
+  CalculationModel pottonResult({List<ChartModel>? chart}) {
+    CalculationModel potton = CalculationModel();
+    try {
+      if (profile.userData.gender == true) {
+        potton.value = profile.userData.height! - 100 - ((profile.userData.height! - 100) / 20);
+      } else {
+        potton.value = profile.userData.height! - 100 - ((profile.userData.height! - 100) / 10);
+      }
+    } catch (e) {
+      potton.value = 0;
+    } finally {
+      potton.symbol = 'E';
+      potton.unit = 'potton_unit';
+      potton.description = 'potton_description';
+      potton.title = 'potton_title';
+      potton.shortTitle = 'Potton';
+      potton.longDescription = 'potton_long_description';
+      potton.formulaMale = 'Potton = H - 100 - ((H  - 100) / 10)';
+      potton.formulaFemale = 'Potton = H  - 100 - ((H  - 100) / 20)';
+      potton.chartList = chart;
+      potton.imagePath =
+          imagePath('male_weight_potton', 'female_weight_potton');
+      potton.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return potton;
+  }
   //
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //   return _whr;
-  // }
+  CalculationModel lorenzResult({List<ChartModel>? chart}) {
+    CalculationModel lorenz = CalculationModel();
+    try {
+      if (profile.userData.gender == true) {
+        lorenz.value = profile.userData.height! - 100 - ((profile.userData.height! - 150) / 4);
+      } else {
+        lorenz.value = profile.userData.height! - 100 - ((profile.userData.height! - 150) / 2);
+      }
+    } catch (e) {
+      lorenz.value = 0;
+    } finally {
+      lorenz.symbol = 'F';
+      lorenz.unit = 'lorenz_unit';
+      lorenz.description = 'lorenz_description';
+      lorenz.title = 'lorenz_title';
+      lorenz.shortTitle = 'Lorenz';
+      lorenz.longDescription = 'lorenz_long_description';
+      lorenz.formulaMale = 'Lorenz = H - 100 - ((H  - 150) / 2)';
+      lorenz.formulaFemale = 'Lorenz = H - 100 - ((H  - 150) / 4)';
+      lorenz.chartList = chart;
+      lorenz.imagePath = imagePath('male_weight', 'female_weight');
+      lorenz.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return lorenz;
+  }
   //
-  // CalculationModel whtrResult({List<ChartModel> chart}) {
-  //   try {
-  //     _whtr.value = waist / height;
-  //   } catch (e) {
-  //     _whtr.value = 0.80;
-  //   } finally {
-  //     if (gender == true) {
-  //       if (_whtr.value < 0.34) {
-  //         _whtr.unit = 'whtr_extremely_slim';
-  //         _whtr.description = 'whtr_extremely_slim_description';
-  //         displayColorValue = Colors.redAccent;
-  //       } else if (_whtr.value > 0.35 && _whtr.value <= 0.43) {
-  //         _whtr.unit = 'whtr_slim';
-  //         _whtr.description = 'whtr_slim_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whtr.value > 0.43 && _whtr.value <= 0.52) {
-  //         _whtr.unit = 'whtr_healthy';
-  //         _whtr.description = 'whtr_healthy_description';
-  //         displayColorValue = colorLightingColorDark;
-  //       } else if (_whtr.value >= 0.53 && _whtr.value <= 0.57) {
-  //         _whtr.unit = 'whtr_overweight';
-  //         _whtr.description = 'whtr_overweight_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whtr.value >= 0.58 && _whtr.value <= 0.62) {
-  //         _whtr.unit = 'whtr_very_overweight';
-  //         _whtr.description = 'whtr_very_overweight_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whtr.value > 0.63) {
-  //         _whtr.unit = 'whtr_obese';
-  //         _whtr.description = 'whtr_obese_description';
-  //         displayColorValue = Colors.redAccent;
-  //       }
-  //     } else {
-  //       if (_whtr.value < 0.34) {
-  //         _whtr.unit = 'whtr_extremely_slim';
-  //         _whtr.description = 'whtr_extremely_slim_description';
-  //         displayColorValue = Colors.redAccent;
-  //       } else if (_whtr.value > 0.35 && _whtr.value <= 0.42) {
-  //         _whtr.unit = 'whtr_slim';
-  //         _whtr.description = 'whtr_slim_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whtr.value > 0.42 && _whtr.value <= 0.48) {
-  //         _whtr.unit = 'whtr_healthy';
-  //         _whtr.description = 'whtr_healthy_description';
-  //         displayColorValue = colorLightingColorDark;
-  //       } else if (_whtr.value >= 0.49 && _whtr.value <= 0.53) {
-  //         _whtr.unit = 'whtr_overweight';
-  //         _whtr.description = 'whtr_overweight_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whtr.value > 0.53 && _whtr.value <= 0.57) {
-  //         _whtr.unit = 'whtr_very_overweight';
-  //         _whtr.description = 'whtr_very_overweight_description';
-  //         displayColorValue = Colors.yellow;
-  //       } else if (_whtr.value > 0.58) {
-  //         _whtr.unit = 'whtr_obese';
-  //         _whtr.description = 'whtr_obese_description';
-  //         displayColorValue = Colors.redAccent;
-  //       }
-  //     }
-  //
-  //     _whtr.symbol = 'P';
-  //     _whtr.title = 'whtr_title';
-  //     _whtr.shortTitle = 'WHTR';
-  //     _whtr.longDescription = 'whtr_long_description';
-  //     _whtr.formulaMale = 'WHTR = Wa / H * 100';
-  //     _whtr.formulaFemale = '';
-  //     _whtr.chartList = chart;
-  //     _whtr.imagePath = imagePath('male_index2', 'female_index');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _whtr;
-  // }
-  //
-  // CalculationModel pottonResult({List<ChartModel> chart}) {
-  //   try {
-  //     if (gender == true) {
-  //       _potton.value = height - 100 - ((height - 100) / 20);
-  //     } else {
-  //       _potton.value = height - 100 - ((height - 100) / 10);
-  //     }
-  //   } catch (e) {
-  //     _potton.value = 0;
-  //   } finally {
-  //     _potton.symbol = 'E';
-  //     _potton.unit = 'potton_unit';
-  //     _potton.description = 'potton_description';
-  //     _potton.title = 'potton_title';
-  //     _potton.shortTitle = 'Potton';
-  //     _potton.longDescription = 'potton_long_description';
-  //     _potton.formulaMale = 'Potton = H - 100 - ((H  - 100) / 10)';
-  //     _potton.formulaFemale = 'Potton = H  - 100 - ((H  - 100) / 20)';
-  //     _potton.chartList = chart;
-  //     _potton.imagePath =
-  //         imagePath('male_weight_potton', 'female_weight_potton');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _potton;
-  // }
-  //
-  // CalculationModel lorenzResult({List<ChartModel> chart}) {
-  //   try {
-  //     if (gender == true) {
-  //       _lorenz.value = height - 100 - ((height - 150) / 4);
-  //     } else {
-  //       _lorenz.value = height - 100 - ((height - 150) / 2);
-  //     }
-  //   } catch (e) {
-  //     _lorenz.value = 0;
-  //   } finally {
-  //     _lorenz.symbol = 'F';
-  //     _lorenz.unit = 'lorenz_unit';
-  //     _lorenz.description = 'lorenz_description';
-  //     _lorenz.title = 'lorenz_title';
-  //     _lorenz.shortTitle = 'Lorenz';
-  //     _lorenz.longDescription = 'lorenz_long_description';
-  //     _lorenz.formulaMale = 'Lorenz = H - 100 - ((H  - 150) / 2)';
-  //     _lorenz.formulaFemale = 'Lorenz = H - 100 - ((H  - 150) / 4)';
-  //     _lorenz.chartList = chart;
-  //     _lorenz.imagePath = imagePath('male_weight', 'female_weight');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _lorenz;
-  // }
-  //
-  // CalculationModel pureWeightResult({List<ChartModel> chart}) {
-  //   double fatWeight;
-  //   try {
-  //     if (gender == true) {
-  //       fatWeight = 495 /
-  //           (1.0324 -
-  //               .19077 * (log(waist - neck) / log(10)) +
-  //               .15456 * (log(height) / log(10))) -
-  //           450;
-  //     } else {
-  //       fatWeight = 495 /
-  //           (1.29579 -
-  //               .35004 * (log(waist + hip - neck) / log(10)) +
-  //               .22100 * (log(height) / log(10))) -
-  //           450;
-  //     }
-  //     fatWeight = (fatWeight * weight) / 100;
-  //     fatWeight *= 0.45359237;
-  //     _leanWeight.value = weight - fatWeight;
-  //   } catch (e) {
-  //     _leanWeight.value = 0;
-  //   } finally {
-  //     _leanWeight.symbol = 'G';
-  //     _leanWeight.unit = 'pureweight_unit';
-  //     _leanWeight.description = 'pureweight_description';
-  //     _leanWeight.title = 'pureweight_title';
-  //     _leanWeight.shortTitle = 'LowFatWeight';
-  //     _leanWeight.longDescription = 'pureweight_long_description';
-  //     _leanWeight.formulaMale = 'LowFatWeight = W - BF';
-  //     _leanWeight.formulaFemale = '';
-  //     _leanWeight.chartList = chart;
-  //     _leanWeight.imagePath = imagePath('male_weight_fat', 'female_weight_fat');
-  //
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _leanWeight;
-  // }
-  //
-  // CalculationModel pureBmrResult({List<ChartModel> chart}) {
+  CalculationModel pureWeightResult({List<ChartModel>? chart}) {
+    CalculationModel leanWeight = CalculationModel();
+    double fatWeight;
+    try {
+      if (profile.userData.gender == true) {
+        fatWeight = 495 /
+            (1.0324 -
+                .19077 * (log(profile.userData.waist! - profile.userData.neck!) / log(10)) +
+                .15456 * (log(profile.userData.height!) / log(10))) -
+            450;
+      } else {
+        fatWeight = 495 /
+            (1.29579 -
+                .35004 * (log(profile.userData.waist! + profile.userData.hips! - profile.userData.neck!) / log(10)) +
+                .22100 * (log(profile.userData.height!) / log(10))) -
+            450;
+      }
+      fatWeight = (fatWeight * profile.userData.weight!) / 100;
+      fatWeight *= 0.45359237;
+      leanWeight.value = profile.userData.weight! - fatWeight;
+    } catch (e) {
+      leanWeight.value = 0;
+    } finally {
+      leanWeight.symbol = 'G';
+      leanWeight.unit = 'pureweight_unit';
+      leanWeight.description = 'pureweight_description';
+      leanWeight.title = 'pureweight_title';
+      leanWeight.shortTitle = 'LowFatWeight';
+      leanWeight.longDescription = 'pureweight_long_description';
+      leanWeight.formulaMale = 'LowFatWeight = W - BF';
+      leanWeight.formulaFemale = '';
+      leanWeight.chartList = chart;
+      leanWeight.imagePath = imagePath('male_weight_fat', 'female_weight_fat');
+
+      leanWeight.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return leanWeight;
+  }
+
+  // CalculationModel pureBmrResult({List<ChartModel>? chart}) {
   //   num selectWeight = selectedWeight();
   //
   //   try {
@@ -634,84 +662,87 @@ class LogicProvider extends ChangeNotifier {
   //   return _pureTer;
   // }
   //
-  // CalculationModel waterIntakeResult({List<ChartModel> chart}) {
-  //   num selectWeight = selectedWeight();
+  CalculationModel waterIntakeResult({List<ChartModel>? chart}) {
+    CalculationModel water = CalculationModel();
+    double selectWeight = selectedWeight();
+
+    try {
+      water.value = (selectWeight * 30) / 1000;
+    } catch (e) {
+      water.value = 0;
+    } finally {
+      water.symbol = 'J';
+      water.shortTitle = 'H2O';
+      water.title = 'water_title';
+      water.unit = 'water_unit';
+      water.description = 'water_description';
+      water.longDescription = 'water_long_description';
+      water.formulaMale = 'H2O = (W * 30) / 1000';
+      water.formulaFemale = "";
+      water.chartList = chart;
+      water.imagePath = imagePath('male_water', 'female_water');
+      water.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return water;
+  }
   //
-  //   try {
-  //     _water.value = (selectWeight * 30) / 1000;
-  //   } catch (e) {
-  //     _water.value = 0;
-  //   } finally {
-  //     _water.symbol = 'J';
-  //     _water.shortTitle = 'H2O';
-  //     _water.title = 'water_title';
-  //     _water.unit = 'water_unit';
-  //     _water.description = 'water_description';
-  //     _water.longDescription = 'water_long_description';
-  //     _water.formulaMale = 'H2O = (W * 30) / 1000';
-  //     _water.formulaFemale = "";
-  //     _water.chartList = chart;
-  //     _water.imagePath = imagePath('male_water', 'female_water');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //   return _water;
-  // }
-  //
-  // CalculationModel proteinIntakeResult({List<ChartModel> chart}) {
-  //   num selectWeight = selectedWeight();
-  //   num bmr;
-  //
-  //   try {
-  //     if (gender == true) {
-  //       bmr = 66.47 + (13.75 * selectWeight) + (5 * height) - (6.75 * age);
-  //     } else {
-  //       bmr = 665.09 + (9.56 * selectWeight) + (1.85 * height) - (4.67 * age);
-  //     }
-  //     if (_isMinKcal == true) {
-  //       switch (activity) {
-  //         case 0:
-  //           bmr = bmr * 1.2;
-  //           break;
-  //         case 1:
-  //           bmr = bmr * 1.4;
-  //           break;
-  //         case 2:
-  //           bmr = bmr * 1.6;
-  //           break;
-  //         case 3:
-  //           bmr = bmr * 1.75;
-  //           break;
-  //         case 4:
-  //           bmr = bmr * 1.9;
-  //           break;
-  //       }
-  //     }
-  //
-  //     if (_isProteinKcal == true) {
-  //       _proteinIntake.unit = "unit_kcal";
-  //       _proteinIntake.value = (bmr * _protein) / 100;
-  //     } else {
-  //       _proteinIntake.unit = "unit_gram";
-  //       _proteinIntake.value = (bmr * _protein) / 100;
-  //       _proteinIntake.value /= 4;
-  //     }
-  //   } catch (e) {
-  //     _proteinIntake.value = 0;
-  //   } finally {
-  //     _proteinIntake.symbol = "K";
-  //     _proteinIntake.title = "protein_title";
-  //     _proteinIntake.shortTitle = "PROTEIN";
-  //     _proteinIntake.description = "protein_description";
-  //     _proteinIntake.longDescription = "protein_long_description";
-  //     _proteinIntake.formulaMale = "P = (K * M) / 100";
-  //     _proteinIntake.formulaFemale = "";
-  //     _proteinIntake.chartList = chart;
-  //     _proteinIntake.imagePath = imagePath('male_food_prot', 'female_food');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _proteinIntake;
-  // }
+  CalculationModel proteinIntakeResult({List<ChartModel>? chart}) {
+    CalculationModel proteinIntake = CalculationModel();
+    double selectWeight = selectedWeight();
+    double bmr;
+
+    try {
+      if (profile.userData.gender == true) {
+        bmr = 66.47 + (13.75 * selectWeight) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
+      } else {
+        bmr = 665.09 + (9.56 * selectWeight) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
+      }
+      if (settings.isMinKcal == true) {
+        switch (profile.userData.activity) {
+          case 0:
+            bmr = bmr * 1.2;
+            break;
+          case 1:
+            bmr = bmr * 1.4;
+            break;
+          case 2:
+            bmr = bmr * 1.6;
+            break;
+          case 3:
+            bmr = bmr * 1.75;
+            break;
+          case 4:
+            bmr = bmr * 1.9;
+            break;
+        }
+      }
+
+      if (settings.isProteinKcal == true) {
+        proteinIntake.unit = "unit_kcal";
+        proteinIntake.value = (bmr * profile.userData.proteinPercent!) / 100;
+      } else {
+        proteinIntake.unit = "unit_gram";
+        proteinIntake.value = (bmr * profile.userData.proteinPercent!) / 100;
+        proteinIntake.value = proteinIntake.value! / 4;
+      }
+    } catch (e) {
+      proteinIntake.value = 0;
+    } finally {
+      proteinIntake.symbol = "K";
+      proteinIntake.title = "protein_title";
+      proteinIntake.shortTitle = "PROTEIN";
+      proteinIntake.description = "protein_description";
+      proteinIntake.longDescription = "protein_long_description";
+      proteinIntake.formulaMale = "P = (K * M) / 100";
+      proteinIntake.formulaFemale = "";
+      proteinIntake.chartList = chart;
+      proteinIntake.imagePath = imagePath('male_food_prot', 'female_food');
+      proteinIntake.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return proteinIntake;
+  }
   //
   // CalculationModel carboIntakeResult({List<ChartModel> chart}) {
   //   num selectWeight = selectedWeight();
