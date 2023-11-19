@@ -52,20 +52,42 @@ class SettingsProvider extends ChangeNotifier {
 
   //nutrition settings
   //TODO: set kcal or grams valu for protin and carbo counting
-  bool isMinKcal = true;
+  bool isMaxKcal = true;
   bool isProteinKcal = true;
+  bool isCarboKcal = true;
+  bool isFatKcal = true;
   NutritionOptionList nutritionSettingsList = NutritionOptionList();
   List nutritionSettings = [];
 
   getNutritionOptionList() async {
     nutritionSettings =
         await _prefs.restoreSettingsList(nutritionSettingsOption, nutritionSettings);
+
+    for(int i = 0; i < nutritionSettings.length; i++){
+      switch(i){
+        case 0:
+          isProteinKcal = nutritionSettings[i].value;
+          break;
+        case 1:
+          isCarboKcal = nutritionSettings[i].value;
+          break;
+        case 2:
+          isFatKcal = nutritionSettings[i].value;
+          break;
+        case 3:
+          isMaxKcal = nutritionSettings[i].value;
+          break;
+
+      }
+    }
+    notifyListeners();
   }
 
   onNutritionOption(bool value, int index) {
     nutritionSettings[index].value = value;
     _prefs.storeList(
         nutritionSettingsOption, nutritionSettings);
+    getNutritionOptionList();
     notifyListeners();
   }
 

@@ -40,7 +40,7 @@ class ActivityCarousel extends StatelessWidget {
                     );
                   },
                   options: CarouselOptions(
-                    height: 100,
+                    height: 90,
                     aspectRatio: 3/2,
                     viewportFraction: 0.8,
                     initialPage: profileProvider.activityLevel,

@@ -184,6 +184,7 @@ class ProfileProvider extends ChangeNotifier {
   onNutritionModelSwitch(bool newValue) {
     isCustomNutrition = newValue;
     _prefs.storeBool(nutritionChoiceSwitchKey, isCustomNutrition);
+    getUserNutritionValues();
     notifyListeners();
   }
 
@@ -215,12 +216,12 @@ class ProfileProvider extends ChangeNotifier {
   UserDataModel userData = UserDataModel();
   UserDataModel getUserData() {
 
-    List? data = [...userDataList,...userNutritionDataList, ...userPowerActivityList];
+    List? data = [...userDataList, ...userPowerActivityList];
 
     userData.gender = isGenderSelected;
     userData.activity = activityLevel;
 
-    //print('ITEMS NUMBER ${data.length}');
+    print('ITEMS NUMBER ${data.length}');
     for(int i = 0; i < data.length; i++){
      // print('This is new list from all sliders - ${data[i].name}');
       switch(data[i].name){
@@ -242,19 +243,57 @@ class ProfileProvider extends ChangeNotifier {
         case 'neck':
           userData.neck = data[i].sliderValue.toDouble();
           break;
+        case 'bench press':
+          userData.benchPressPower = data[i].sliderValue.toDouble();
+          break;
+        case 'squat':
+          userData.squatPower = data[i].sliderValue.toDouble();
+          break;
+        case 'dead lift':
+          userData.deadLiftPower = data[i].sliderValue.toDouble();
+          break;
       }
     }
-    List? nutriData;
+
     if(isCustomNutrition == false){
-      nutriData = userNutritionDataList;
+
+      for(int i = 0; i < userNutritionDataList.length ; i++){
+        //print('This is new list nutri data custom nutri ${isCustomNutrition} - ${userNutritionDataList[i].name}');
+        switch(userNutritionDataList[i].name){
+          case 'protein':
+            userData.proteinPercent = userNutritionDataList[i].sliderValue.toDouble();
+            break;
+          case 'carbo':
+            userData.carbPercent = userNutritionDataList[i].sliderValue.toDouble();
+            break;
+          case 'fat':
+            userData.fatPercent = userNutritionDataList[i].sliderValue.toDouble();
+            break;
+        }
+      }
     }else{
-      nutriData = userNutritionDefaultList;
-    }
-    for(int i = 0; i < nutriData.length ; i++){
-      print('This is new list nutri data - ${data[i].name}');
-    }
 
-
+      for(int i = 0; i < userNutritionDefaultList.length ; i++){
+       // print('This is new list nutri data custom nutri ${isCustomNutrition} - ${userNutritionDefaultList[i].name}');
+        switch(userNutritionDefaultList[i].name){
+          case 'weight loss':
+            userData.proteinPercent = userNutritionDefaultList[i].protein.toDouble();
+            userData.carbPercent = userNutritionDefaultList[i].carbohydrate.toDouble();
+            userData.fatPercent = userNutritionDefaultList[i].fat.toDouble();
+            break;
+          case 'maintain':
+            userData.proteinPercent = userNutritionDefaultList[i].protein.toDouble();
+            userData.carbPercent = userNutritionDefaultList[i].carbohydrate.toDouble();
+            userData.fatPercent = userNutritionDefaultList[i].fat.toDouble();
+            break;
+          case 'gain weight':
+            userData.proteinPercent = userNutritionDefaultList[i].protein.toDouble();
+            userData.carbPercent = userNutritionDefaultList[i].carbohydrate.toDouble();
+            userData.fatPercent = userNutritionDefaultList[i].fat.toDouble();
+            break;
+        }
+      }
+    }
 
     notifyListeners();
     return userData;

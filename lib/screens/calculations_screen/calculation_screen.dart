@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/logic_provider/logic_provider.dart';
 import '../../providers/profile_provider/profile_provider.dart';
 import '../../providers/settings_provider/settings_provider.dart';
+import '../../widgets/headers/widget_header.dart';
+import 'details_calc_screen.dart';
 
 class CalculationScreen extends StatefulWidget {
   const CalculationScreen({super.key});
@@ -21,8 +22,15 @@ class _CalculationScreenState extends State<CalculationScreen> {
         builder: (context, profile, logic, settings, child){
 
       return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Calculations', style: Theme.of(context).textTheme.headlineMedium,),
+          SizedBox(height: 20,),
+          WidgetHeader(
+            title: "calculations",
+            fontSize: 15,
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          ),
           Expanded(
               child:
           GridView.count(
@@ -45,28 +53,48 @@ class _CalculationScreenState extends State<CalculationScreen> {
           child: ScaleAnimation(
           scale: 0.9,
           child: FadeInAnimation(
-          child: Card(child:
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('${listData.title}:', style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: fontSize),),
-                  RichText(text: TextSpan(
-                    text: '${listData.value!.toStringAsFixed(2)} ',
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: listData.infoColor, fontSize: fontSize),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: listData.unit,
-                        style: Theme.of(context).textTheme.headlineMedium!.copyWith( fontSize: fontSize),
-                      )
-                    ]
-                  )),
-                  Text(listData.description!, style: Theme.of(context).textTheme.headlineMedium!.copyWith( fontSize: fontSize),),
-                ],
-              ),
-            ))),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => DetailCalcScreen(
+                    data: listData,
+                    heroTag: '${listData.id}',
+                  ),
+                  transitionDuration: Duration(milliseconds: 300),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    var scale = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                        parent: animation, curve: Curves.easeIn));
+                    return ScaleTransition(
+                        alignment: Alignment.center, scale: scale, child: child);
+                  },
+                ),);
+            },
+            child: Card(
+                child:
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('${listData.title}:', style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontSize: fontSize),),
+                    RichText(text: TextSpan(
+                      text: '${listData.value!.toStringAsFixed(2)} ',
+                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: listData.infoColor, fontSize: fontSize),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: listData.unit,
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith( fontSize: fontSize),
+                        )
+                      ]
+                    )),
+                    Text(listData.description!, style: Theme.of(context).textTheme.headlineMedium!.copyWith( fontSize: fontSize),),
+                  ],
+                ),
+              )),
+          )),
           ),
           );
           }

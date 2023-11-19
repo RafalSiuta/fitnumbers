@@ -35,19 +35,19 @@ class UserNutrition {
 
   final List<NutritionModel> _defaultNutritionList =  [
      NutritionModel(
-        title: 'weight loss',
+        name: 'weight loss',
         description: 'Set nutrition percentage with 35-50% protein, 25-45% carbohydrate, and 20-35% fat.',
         protein: 40,
         carbohydrate: 30,
         fat: 30),
     NutritionModel(
-        title: 'maintain',
+        name: 'maintain',
         description: 'Set nutrition percentage with 25-40% protein, 35-55% carbohydrate, and 25-40% fat.',
         protein: 30,
         carbohydrate: 40,
         fat: 30),
     NutritionModel(
-        title: 'gain weight',
+        name: 'gain weight',
         description: 'Set nutrition percentage with 35% protein, 45% carbohydrate, and 20% fat.',
         protein: 35,
         carbohydrate: 50,

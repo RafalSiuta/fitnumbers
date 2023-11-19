@@ -36,7 +36,11 @@ class LogicProvider extends ChangeNotifier {
       pureWeightResult(),
       waterIntakeResult(),
       proteinIntakeResult(),
-
+      carboIntakeResult(),
+      fatIntakeResult(),
+      benchResult(),
+      squatResult(),
+      deadLiftResult()
     ];
     notifyListeners();
     return list;
@@ -698,7 +702,7 @@ class LogicProvider extends ChangeNotifier {
       } else {
         bmr = 665.09 + (9.56 * selectWeight) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
       }
-      if (settings.isMinKcal == true) {
+      if (settings.isMaxKcal == true) {
         switch (profile.userData.activity) {
           case 0:
             bmr = bmr * 1.2;
@@ -744,119 +748,120 @@ class LogicProvider extends ChangeNotifier {
     return proteinIntake;
   }
   //
-  // CalculationModel carboIntakeResult({List<ChartModel> chart}) {
-  //   num selectWeight = selectedWeight();
+  CalculationModel carboIntakeResult({List<ChartModel>? chart}) {
+    //double selectWeight = selectedWeight();
+    CalculationModel carboIntake = CalculationModel();
+    double bmr = bmrResult().value!;
+
+    try {
+      // if (profile.userData.gender == true) {
+      //   bmr = 66.47 + (13.75 * selectWeight) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
+      // } else {
+      //   bmr = 665.09 + (9.56 * selectWeight) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
+      // }
+      if (settings.isMaxKcal == true) {
+        switch (profile.userData.activity) {
+          case 0:
+            bmr = bmr * 1.2;
+            break;
+          case 1:
+            bmr = bmr * 1.4;
+            break;
+          case 2:
+            bmr = bmr * 1.6;
+            break;
+          case 3:
+            bmr = bmr * 1.75;
+            break;
+          case 4:
+            bmr = bmr * 1.9;
+            break;
+        }
+      }
+
+      if (settings.isCarboKcal == true) {
+        carboIntake.unit = "unit_kcal";
+        carboIntake.value = (bmr * profile.userData.carbPercent!) / 100;
+      } else {
+        carboIntake.unit = "unit_gram";
+        carboIntake.value = (bmr * profile.userData.carbPercent!) / 100;
+        carboIntake.value = carboIntake.value! / 4;
+      }
+    } catch (e) {
+      carboIntake.value = 0;
+      print('SUM TING WONG CARBO KCAL ${e}\n Carbontake value: ${carboIntake.value}; Bmr value: ${bmr} Carb percent: ${profile.userData.carbPercent}');
+    } finally {
+      carboIntake.symbol = "M";
+      carboIntake.title = "carbo_title";
+      carboIntake.shortTitle = "CARBO";
+      carboIntake.description = "carbo_description";
+      carboIntake.longDescription = "carbo_long_description";
+      carboIntake.formulaMale = "C = (K * M) / 100";
+      carboIntake.formulaFemale = "";
+      carboIntake.chartList = chart;
+      carboIntake.imagePath = imagePath('male_food', 'female_food_carbo');
+      carboIntake.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return carboIntake;
+  }
   //
-  //   num bmr;
-  //
-  //   try {
-  //     if (gender == true) {
-  //       bmr = 66.47 + (13.75 * selectWeight) + (5 * height) - (6.75 * age);
-  //     } else {
-  //       bmr = 665.09 + (9.56 * selectWeight) + (1.85 * height) - (4.67 * age);
-  //     }
-  //     if (_isMinKcal == true) {
-  //       switch (activity) {
-  //         case 0:
-  //           bmr = bmr * 1.2;
-  //           break;
-  //         case 1:
-  //           bmr = bmr * 1.4;
-  //           break;
-  //         case 2:
-  //           bmr = bmr * 1.6;
-  //           break;
-  //         case 3:
-  //           bmr = bmr * 1.75;
-  //           break;
-  //         case 4:
-  //           bmr = bmr * 1.9;
-  //           break;
-  //       }
-  //     }
-  //
-  //     if (_isCarboKcal == true) {
-  //       _carboIntake.unit = "unit_kcal";
-  //       _carboIntake.value = (bmr * _carbo) / 100;
-  //     } else {
-  //       _carboIntake.unit = "unit_gram";
-  //       _carboIntake.value = (bmr * _carbo) / 100;
-  //       _carboIntake.value /= 4;
-  //     }
-  //   } catch (e) {
-  //     _carboIntake.value = 0;
-  //   } finally {
-  //     _carboIntake.symbol = "M";
-  //     _carboIntake.title = "carbo_title";
-  //     _carboIntake.shortTitle = "CARBO";
-  //     _carboIntake.description = "carbo_description";
-  //     _carboIntake.longDescription = "carbo_long_description";
-  //     _carboIntake.formulaMale = "C = (K * M) / 100";
-  //     _carboIntake.formulaFemale = "";
-  //     _carboIntake.chartList = chart;
-  //     _carboIntake.imagePath = imagePath('male_food', 'female_food_carbo');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _carboIntake;
-  // }
-  //
-  // CalculationModel fatIntakeResult({List<ChartModel> chart}) {
-  //   num selectWeight = selectedWeight();
-  //
-  //   num bmr;
-  //
-  //   try {
-  //     if (gender == true) {
-  //       bmr = 66.47 + (13.75 * selectWeight) + (5 * height) - (6.75 * age);
-  //     } else {
-  //       bmr = 665.09 + (9.56 * selectWeight) + (1.85 * height) - (4.67 * age);
-  //     }
-  //     if (_isMinKcal == true) {
-  //       switch (activity) {
-  //         case 0:
-  //           bmr = bmr * 1.2;
-  //           break;
-  //         case 1:
-  //           bmr = bmr * 1.4;
-  //           break;
-  //         case 2:
-  //           bmr = bmr * 1.6;
-  //           break;
-  //         case 3:
-  //           bmr = bmr * 1.75;
-  //           break;
-  //         case 4:
-  //           bmr = bmr * 1.9;
-  //           break;
-  //       }
-  //     }
-  //
-  //     if (_isFatKcal == true) {
-  //       _fatIntake.unit = "unit_kcal";
-  //       _fatIntake.value = (bmr * _fat) / 100;
-  //     } else {
-  //       _fatIntake.unit = "unit_gram";
-  //       _fatIntake.value = (bmr * _fat) / 100;
-  //       _fatIntake.value /= 4;
-  //     }
-  //   } catch (e) {
-  //     _fatIntake.value = 0;
-  //   } finally {
-  //     _fatIntake.symbol = "L";
-  //     _fatIntake.title = "fat_title";
-  //     _fatIntake.shortTitle = "FAT";
-  //     _fatIntake.description = "fat_description";
-  //     _fatIntake.longDescription = "fat_long_description";
-  //     _fatIntake.formulaMale = "F = (K * M) / 100";
-  //     _fatIntake.formulaFemale = "";
-  //     _fatIntake.chartList = chart;
-  //     _fatIntake.imagePath = imagePath('male_food_fat', 'female_food_fat');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _fatIntake;
-  // }
+  CalculationModel fatIntakeResult({List<ChartModel>? chart}) {
+    double selectWeight = selectedWeight();
+    CalculationModel fatIntake = CalculationModel();
+    double bmr;
+
+    try {
+      if (profile.userData.gender == true) {
+        bmr = 66.47 + (13.75 * selectWeight) + (5 * profile.userData.height!) - (6.75 * profile.userData.age!);
+      } else {
+        bmr = 665.09 + (9.56 * selectWeight) + (1.85 * profile.userData.height!) - (4.67 * profile.userData.age!);
+      }
+      if (settings.isMaxKcal == true) {
+        switch (profile.userData.activity) {
+          case 0:
+            bmr = bmr * 1.2;
+            break;
+          case 1:
+            bmr = bmr * 1.4;
+            break;
+          case 2:
+            bmr = bmr * 1.6;
+            break;
+          case 3:
+            bmr = bmr * 1.75;
+            break;
+          case 4:
+            bmr = bmr * 1.9;
+            break;
+        }
+      }
+
+      if (settings.isFatKcal == true) {
+        fatIntake.unit = "unit_kcal";
+        fatIntake.value = (bmr * profile.userData.fatPercent!) / 100;
+      } else {
+        fatIntake.unit = "unit_gram";
+        fatIntake.value = (bmr * profile.userData.fatPercent!) / 100;
+        fatIntake.value = fatIntake.value! / 4;
+      }
+    } catch (e) {
+      fatIntake.value = 0;
+    } finally {
+      fatIntake.symbol = "L";
+      fatIntake.title = "fat_title";
+      fatIntake.shortTitle = "FAT";
+      fatIntake.description = "fat_description";
+      fatIntake.longDescription = "fat_long_description";
+      fatIntake.formulaMale = "F = (K * M) / 100";
+      fatIntake.formulaFemale = "";
+      fatIntake.chartList = chart;
+      fatIntake.imagePath = imagePath('male_food_fat', 'female_food_fat');
+      fatIntake.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return fatIntake;
+  }
   //
   // CalculationModel maxHrResult({List<ChartModel> chart}) {
   //   num selectWeight = selectedWeight();
@@ -887,71 +892,74 @@ class LogicProvider extends ChangeNotifier {
   //   return _maxHr;
   // }
   //
-  // CalculationModel benchResult({List<ChartModel> chart}) {
-  //   try {
-  //     _maxBenchPress.value = (_bench * 1.1307) + 0.6998;
-  //   } catch (e) {
-  //     _maxBenchPress.value = 0;
-  //   } finally {
-  //     _maxBenchPress.symbol = 'R';
-  //     _maxBenchPress.shortTitle = 'Max Bench';
-  //     _maxBenchPress.title = 'maxbench_title';
-  //     _maxBenchPress.unit = 'maxbench_unit';
-  //     _maxBenchPress.description = 'maxbench_description';
-  //     _maxBenchPress.longDescription = 'maxbench_long_description';
-  //     _maxBenchPress.formulaMale = 'Bp = (W * 1.1307) + 0.6998';
-  //     _maxBenchPress.formulaFemale = "";
-  //     _maxBenchPress.chartList = chart;
-  //     _maxBenchPress.imagePath = imagePath('male_bench', 'female_bench');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
+  CalculationModel benchResult({List<ChartModel>? chart}) {
+    CalculationModel maxBenchPress = CalculationModel();
+    try {
+      maxBenchPress.value = (profile.userData.benchPressPower! * 1.1307) + 0.6998;
+    } catch (e) {
+      maxBenchPress.value = 0;
+    } finally {
+      maxBenchPress.symbol = 'R';
+      maxBenchPress.shortTitle = 'Max Bench';
+      maxBenchPress.title = 'maxbench_title';
+      maxBenchPress.unit = 'maxbench_unit';
+      maxBenchPress.description = 'maxbench_description';
+      maxBenchPress.longDescription = 'maxbench_long_description';
+      maxBenchPress.formulaMale = 'Bp = (W * 1.1307) + 0.6998';
+      maxBenchPress.formulaFemale = "";
+      maxBenchPress.chartList = chart;
+      maxBenchPress.imagePath = imagePath('male_bench', 'female_bench');
+      maxBenchPress.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return maxBenchPress;
+  }
   //
-  //   return _maxBenchPress;
-  // }
+  CalculationModel squatResult({List<ChartModel>? chart}) {
+    CalculationModel maxSquat = CalculationModel();
+    try {
+      maxSquat.value = (profile.userData.squatPower! * 1.09703) + 14.2546;
+    } catch (e) {
+      maxSquat.value = 0;
+    } finally {
+      maxSquat.symbol = 'S';
+      maxSquat.shortTitle = 'Max Squat';
+      maxSquat.title = 'maxsquat_title';
+      maxSquat.unit = 'maxsquat_unit';
+      maxSquat.description = 'maxsquat_description';
+      maxSquat.longDescription = 'maxsquat_long_description';
+      maxSquat.formulaMale = 'Ms = (W * 1.09703) + 14.2546';
+      maxSquat.formulaFemale = "";
+      maxSquat.chartList = chart;
+      maxSquat.imagePath = imagePath('male_squat', 'female_squat');
+      maxSquat.infoColor = checkWarning(0);
+    }
+    notifyListeners();
+    return maxSquat;
+  }
   //
-  // CalculationModel squatResult({List<ChartModel> chart}) {
-  //   try {
-  //     _maxSquat.value = (_squat * 1.09703) + 14.2546;
-  //   } catch (e) {
-  //     _maxSquat.value = 0;
-  //   } finally {
-  //     _maxSquat.symbol = 'S';
-  //     _maxSquat.shortTitle = 'Max Squat';
-  //     _maxSquat.title = 'maxsquat_title';
-  //     _maxSquat.unit = 'maxsquat_unit';
-  //     _maxSquat.description = 'maxsquat_description';
-  //     _maxSquat.longDescription = 'maxsquat_long_description';
-  //     _maxSquat.formulaMale = 'Ms = (W * 1.09703) + 14.2546';
-  //     _maxSquat.formulaFemale = "";
-  //     _maxSquat.chartList = chart;
-  //     _maxSquat.imagePath = imagePath('male_squat', 'female_squat');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _maxSquat;
-  // }
-  //
-  // CalculationModel deadLiftResult({List<ChartModel> chart}) {
-  //   try {
-  //     _maxDeadLift.value = (_deadLift * 1.09703) + 14.2546;
-  //   } catch (e) {
-  //     _maxDeadLift.value = 0;
-  //   } finally {
-  //     _maxDeadLift.symbol = 'T';
-  //     _maxDeadLift.shortTitle = 'Max DeadLift';
-  //     _maxDeadLift.title = 'maxdeadlift_title';
-  //     _maxDeadLift.unit = 'maxdeadlift_unit';
-  //     _maxDeadLift.description = 'maxdeadlift_description';
-  //     _maxDeadLift.longDescription = 'maxdeadlift_long_description';
-  //     _maxDeadLift.formulaMale = 'Md = (W * 1.09703) + 14.2546';
-  //     _maxDeadLift.formulaFemale = "";
-  //     _maxDeadLift.chartList = chart;
-  //     _maxDeadLift.imagePath = imagePath('male_deadlift', 'female_deadlift');
-  //     displayColorValue = colorLightingColorDark;
-  //   }
-  //
-  //   return _maxDeadLift;
-  // }
+  CalculationModel deadLiftResult({List<ChartModel>? chart}) {
+    CalculationModel maxDeadLift = CalculationModel();
+    try {
+      maxDeadLift.value = (profile.userData.deadLiftPower! * 1.09703) + 14.2546;
+    } catch (e) {
+      maxDeadLift.value = 0;
+    } finally {
+      maxDeadLift.symbol = 'T';
+      maxDeadLift.shortTitle = 'Max DeadLift';
+      maxDeadLift.title = 'maxdeadlift_title';
+      maxDeadLift.unit = 'maxdeadlift_unit';
+      maxDeadLift.description = 'maxdeadlift_description';
+      maxDeadLift.longDescription = 'maxdeadlift_long_description';
+      maxDeadLift.formulaMale = 'Md = (W * 1.09703) + 14.2546';
+      maxDeadLift.formulaFemale = "";
+      maxDeadLift.chartList = chart;
+      maxDeadLift.imagePath = imagePath('male_deadlift', 'female_deadlift');
+      maxDeadLift.infoColor  = checkWarning(0);
+    }
+    notifyListeners();
+    return maxDeadLift;
+  }
 
   String imagePath(String maleImagePath, String femaleImagePath) {
     if (profile.userData.gender == true) {

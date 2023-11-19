@@ -339,14 +339,14 @@ final themeDark = ThemeData(
       unselectedLabelColor: theme_4unselectedColor,
       unselectedLabelStyle: GoogleFonts.exo2(
         textStyle: const TextStyle(
-            fontSize: 12,
+            fontSize: 15,
             color: theme_4unselectedColor,
             fontWeight: FontWeight.w300,
             decoration: TextDecoration.none),
       ),
       labelStyle: GoogleFonts.exo2(
         textStyle: const TextStyle(
-            fontSize: 12,
+            fontSize: 15,
             color: baseTextColor ,
             fontWeight: FontWeight.w500,
             decoration: TextDecoration.none,

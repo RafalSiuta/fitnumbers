@@ -6,8 +6,10 @@ import '../../../providers/profile_provider/profile_provider.dart';
 import '../../../widgets/buttons/tile_button.dart';
 import '../../../widgets/cards/slider_card.dart';
 import '../../../widgets/carousel/carousel.dart';
+import '../../../widgets/headers/info_text.dart';
 import '../../../widgets/headers/widget_header.dart';
 import '../../../widgets/responsive/column_row_builder.dart';
+import '../../../widgets/responsive/list_builder.dart';
 import '../../../widgets/seekbar/seekbar.dart';
 
 class UserActivityPage extends StatelessWidget {
@@ -27,13 +29,17 @@ class UserActivityPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 ),
                 ActivityCarousel(),
-                SizedBox(height: 20,),
+               // SizedBox(height: 20,),
                 Divider(
                   indent: 70,
                   endIndent: 70,
                 ),
+                InfoText(
+                  title: "4-6 max repetition lift",
+                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: ColumnBuilder(
                     itemCount: profileProvider.activityPowerData.activityPowerListCounter,
                     itemBuilder: (context, index) {
@@ -56,9 +62,12 @@ class UserActivityPage extends StatelessWidget {
                         onChangeEnd: (newValue) {},
                       );
                     },
+          //           separatorBuilder: (context, item){
+          // return  const SizedBox(height: 5,);
+          // },
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(height: 10,),
                 Divider(
                   indent: 70,
                   endIndent: 70,

@@ -81,7 +81,7 @@ class UserNutritionPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         var data = profileProvider.userNutritionDefaultList[index];
                         return  RadioTile(
-                          title: data.title,
+                          title: data.name,
                           description: data.description,
                           value: index,
                           groupValue: profileProvider.defaultNutritionChoice,
